@@ -2,27 +2,96 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <StackPanel Margin="20" >
+    <Grid Margin="20"
+          Background="#FFF2F4F7">
 
-        <ItemsControl ItemsSource="{Binding Items}" Margin="10">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" >
-                        <TextBlock Width="120"
-                                   Text="{Binding Item.Name}" />
+        <!-- CONTENT SURFACE -->
+        <Border Background="White"
+                CornerRadius="12"
+                Padding="20"
+                Margin="10"
+                BorderBrush="#FFE0E0E0"
+                BorderThickness="1">
 
-                        <TextBox Width="60"
-                                 Text="{Binding Quantity,
-                                                UpdateSourceTrigger=PropertyChanged}" />
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
 
-                        <TextBlock Text="{Binding Item.Price, StringFormat=₹{0}}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                    <!-- HEADER -->
+                    <TextBlock Text="Review Quantities"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,20"
+                               Foreground="#FF333333"/>
 
+                    <!-- COLUMN HEADERS -->
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Item"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="Qty"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="2"
+                                   Text="Price"
+                                   FontWeight="SemiBold"/>
+                    </Grid>
+
+                    <!-- ITEMS -->
+                    <ItemsControl ItemsSource="{Binding Items}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#FFFAFAFA"
+                                        BorderBrush="#FFDDDDDD"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Padding="10"
+                                        Margin="0,4">
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Item name -->
+                                        <TextBlock Text="{Binding Item.Name}"
+                                                   VerticalAlignment="Center"
+                                                   FontWeight="SemiBold"/>
+
+                                        <!-- Quantity -->
+                                        <TextBox Grid.Column="1"
+                                                 Width="60"
+                                                 HorizontalAlignment="Left"
+                                                 Text="{Binding Quantity,
+                                                        UpdateSourceTrigger=PropertyChanged}" />
+
+                                        <!-- Price -->
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding Item.Price, StringFormat=₹{0}}"
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- FIXED ACTION BUTTON -->
         <Button Content="Generate Bill"
                 Command="{Binding GenerateBillCommand}"
-                HorizontalAlignment="Right"/>
-    </StackPanel>
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0,0,20,20"
+                Width="140"
+                Height="36"/>
+    </Grid>
 </UserControl>

@@ -2,51 +2,132 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <StackPanel Margin="20" >
+    <Grid Margin="20" Background="#FFF2F4F7">
+        <!-- LAYER 1: SCROLLABLE CONTENT -->
+        <Border Background="White"
+        CornerRadius="12"
+        Padding="20"
+        Margin="10"
+        BorderBrush="#FFE0E0E0"
+        BorderThickness="1">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Available Products"
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Margin="0,0,0,10"
+                    Foreground="#FF333333"/>
 
-        <!-- AVAILABLE PRODUCTS -->
-        <ItemsControl Margin="20" ItemsSource="{Binding AvailableItems}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+                    <!-- AVAILABLE PRODUCTS -->
+                <ItemsControl ItemsSource="{Binding AvailableItems}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderThickness="1"
-                            BorderBrush="Gray"
-                            Padding="10"
-                            Margin="5"
-                            CornerRadius="6">
-                        <StackPanel>
-                            <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Price, StringFormat=₹{0}}"/>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="160"
+                                Height="120"
+                                Background="White"
+                                BorderThickness="1"
+                                BorderBrush="#FFDDDDDD"
+                                Padding="10"
+                                Margin="6"
+                                CornerRadius="8">
 
-                            <Button Content="Add"
-                                    Margin="0,5,0,0"
-                                    Command="{Binding DataContext.AddItemCommand,
-                                                      RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                    CommandParameter="{Binding}" />
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
 
-        <!-- SELECTED ITEMS -->
-        <TextBlock Text="Selected Items" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Name}"
+                                               FontWeight="Bold"
+                                               TextWrapping="Wrap"
+                                               MaxHeight="40"/>
 
-        <ItemsControl ItemsSource="{Binding SelectedItems}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Item.Name}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                                    <TextBlock Grid.Row="1"
+                                               Text="{Binding Price, StringFormat=₹{0}}"
+                                               Margin="0,4,0,0"/>
 
+                                    <Button Grid.Row="2"
+                                            Content="Add"
+                                            VerticalAlignment="Bottom"
+                                            Command="{Binding DataContext.AddItemCommand,
+                                                RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- SELECTED ITEMS -->
+            <TextBlock Text="Selected Items"
+                FontSize="16"
+                FontWeight="SemiBold"
+                Margin="0,24,0,10"
+                Foreground="#FF333333"/>
+
+                    <ItemsControl ItemsSource="{Binding SelectedItems}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="160"
+                                Height="120"
+                                Background="White"
+                                BorderThickness="1"
+                                BorderBrush="#FFDDDDDD"
+                                Padding="10"
+                                Margin="6"
+                                CornerRadius="8">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="{Binding Item.Name}"
+                               FontWeight="Bold"
+                               TextWrapping="Wrap"
+                               MaxHeight="40"/>
+
+                                    <TextBlock Grid.Row="1"
+                               Text="{Binding Item.Price, StringFormat=₹{0}}"
+                               Margin="0,4,0,0"/>
+
+                                    <Button Grid.Row="2"
+                            Content="Remove"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding DataContext.RemoveItemCommand,
+                                RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+
+            </StackPanel>
+        </ScrollViewer>
+        </Border>
+
+        <!-- LAYER 2: FIXED NEXT BUTTON -->
         <Button Content="Next"
                 Command="{Binding NextCommand}"
-                HorizontalAlignment="Right"/>
-    </StackPanel>
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0,0,20,20"
+                Width="100"/>
+    </Grid>
 </UserControl>
