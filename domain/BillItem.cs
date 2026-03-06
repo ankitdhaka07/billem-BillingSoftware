@@ -1,6 +1,6 @@
 ﻿public class BillItem
 {
     public Item Item { get; set; }
-    public int Quantity { get; set; }
-    public int Amount => Item.Price * Quantity;
+    public double Quantity { get; set; }
+    public double Amount => Item.Price * Quantity;
 }
