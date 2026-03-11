@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using UI.Services;
 
 namespace UI;
 
@@ -17,17 +18,19 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        ShowProductSelection();
-    }
+        var selectedItems = new ObservableCollection<BillItem>();
 
-    private void ShowProductSelection()
-    {
-        CurrentViewModel = new ProductSelectionViewModel(OnProductSelected);
-    }
+        NavigationService nav = null!;
+        nav = new NavigationService(type =>
+        {
+            if (type == typeof(ProductSelectionViewModel))
+                return new ProductSelectionViewModel(nav, selectedItems);
+            if (type == typeof(QuantityViewModel))
+                return new QuantityViewModel(selectedItems);
+            throw new InvalidOperationException($"No factory registered for {type.Name}");
+        });
 
-    private void OnProductSelected(ObservableCollection<BillItem> items)
-    {
-        CurrentViewModel = new QuantityViewModel(items);
+        nav.OnNavigate = vm => CurrentViewModel = vm;
+        nav.Navigate<ProductSelectionViewModel>();
     }
-
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using UI.Services;
 
 namespace UI;
 
@@ -13,7 +14,7 @@ public class ProductSelectionViewModel : ViewModelBase
     public ICommand NextCommand { get; }
 
 
-    public ProductSelectionViewModel(Action<ObservableCollection<BillItem>> onNext)
+    public ProductSelectionViewModel(NavigationService navigationService, ObservableCollection<BillItem> selectedItems)
     {
         AvailableItems = new()
         {
@@ -22,12 +23,12 @@ public class ProductSelectionViewModel : ViewModelBase
             new Item { Name = "Pencil", Price = 5 }
         };
 
-        SelectedItems = new ObservableCollection<BillItem>();
+        SelectedItems = selectedItems;
 
         AddItemCommand = new RelayCommand<Item>(AddItem);
         RemoveItemCommand = new RelayCommand<BillItem>(RemoveItem);
         NextCommand = new RelayCommand(
-            () => onNext(SelectedItems),
+            () => navigationService.Navigate<QuantityViewModel>(),
             () => SelectedItems.Any()
         );
 
