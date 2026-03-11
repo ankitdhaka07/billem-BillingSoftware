@@ -1,10 +1,27 @@
-﻿public class Bill
+﻿using domain;
+
+public class Bill
 {
     public Guid Id { get; set; }
-    public List<BillItem> BillItems { get; set; } = new();    
-    public double TotalTaxableAmount  => BillItems.Sum(billItem => billItem.Item.Price * billItem.Quantity);
-    public double TaxPercentage = 0.05;
-    public double TaxApplied => TotalTaxableAmount * TaxPercentage;
-    public double TotalAmount => TotalTaxableAmount * 1.05;
 
+    public string InvoiceNumber { get; set; }
+    public List<BillItem> BillItems { get; set; } = new();
+    public DateTime Date { get; set; } = DateTime.Now;
+    public double TotalTaxableAmount => BillItems.Sum(billItem => billItem.Item.Price * billItem.Quantity);
+    public DateTime SupplyDate { get; set; } = DateTime.Now;
+    public string? VehicleNumber { get; set; }
+    public Customer Customer { get; set; }
+
+    public double CgstPercentage { get; set; } = 0.025;
+
+    public double SgstPercentage { get; set; } = 0.025;
+
+    public double CgstAmount =>
+        TotalTaxableAmount * CgstPercentage;
+
+    public double SgstAmount =>
+        TotalTaxableAmount * SgstPercentage;
+
+    public double TotalAmount =>
+        TotalTaxableAmount + CgstAmount + SgstAmount;
 }

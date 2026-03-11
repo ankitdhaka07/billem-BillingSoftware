@@ -1,4 +1,6 @@
-﻿public class BillItem
+﻿using System.ComponentModel.DataAnnotations;
+
+public class BillItem
 {
     public Item Item { get; set; }
     public double Quantity { get; set; }
