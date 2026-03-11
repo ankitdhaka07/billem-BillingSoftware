@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using domain;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
@@ -19,9 +20,20 @@ public class QuantityViewModel : ViewModelBase
 
     private void GenerateBill()
     {
+        var customer = new Customer
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "Babulal",
+            GstNo = null,
+            BillingAddress = "Bhopawas, Rajasthan",
+            ShippingAddress = "Bhopawas, Rajasthan"
+        };
+
         var bill = new Bill
         {
-            BillItems = Items.ToList()
+            InvoiceNumber = $"INV-{DateTime.Now:yyyyMMddHHmmss}",
+            BillItems = Items.ToList(),
+            Customer = customer
         };
 
         var filePath = Path.Combine(
