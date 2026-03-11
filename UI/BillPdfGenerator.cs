@@ -23,7 +23,6 @@ public static class BillPdfGenerator
                     .Column(col =>
                     {
                         BuildHeader(col, bill, companyName, companyAddress, companyPhone);
-                        col.Item().PaddingHorizontal(-10).LineHorizontal(1);
                         BuildTable(col, bill);
                         col.Item().PaddingHorizontal(-10).LineHorizontal(1);
 
@@ -38,62 +37,100 @@ public static class BillPdfGenerator
 
     static void BuildHeader(ColumnDescriptor col, Bill bill, string companyName, string address, string phone)
     {
-        col.Item().AlignCenter().Text("Thank-you for doing business with us");
-
-        col.Item().AlignCenter().Text("INVOICE")
+        col.Item().AlignCenter().PaddingHorizontal(-10).Text("Thank-you for doing business with us");
+        col.Item().AlignCenter().PaddingHorizontal(-10).Text("INVOICE")
             .FontSize(22)
             .Bold();
-        col.Item().PaddingHorizontal(-10).LineHorizontal(1);
 
-        col.Item().Row(row =>
+        col.Item().PaddingHorizontal(-10).BorderTop(1).BorderBottom(1).Row(row =>
         {
-            row.ConstantItem(70)
+            row.ConstantItem(80)
+                .BorderRight(1)
+                .Element(x=>x.Padding(5))
                 .Height(70)
-                .Border(1)
-                .PaddingRight(10)
                 .AlignCenter()
                 .AlignMiddle()
                 .Text("LOGO");
 
-            row.RelativeItem().Column(c =>
-            {
-                c.Item().Text(companyName).Bold().FontSize(14);
-                c.Item().Text(address);
-                c.Item().Text(phone);
-            });
-            row.ConstantItem(1)
-                .BorderLeft(1)
-                .Height(60);
-            row.RelativeItem().Column(c =>
-            {
-                c.Item().Text($"Invoice Number: {bill.InvoiceNumber}");
-                c.Item().Text($"Invoice Date: {bill.Date:dd-MM-yyyy}");
-                c.Item().Text($"Date Of Supply: {bill.SupplyDate:dd-MM-yyyy}");
-                c.Item().Text("Reverse Charge: NO");
-            });
+            row.RelativeItem()
+                .BorderRight(1)
+                .Element(x => x.Padding(5))
+                .Height(70)
+                .Column(c =>
+                {
+                    c.Item().Text(companyName).Bold().FontSize(14);
+                    c.Item().Text(address);
+                    c.Item().Text(phone);
+                });
+
+            row.RelativeItem()
+                .Element(x => x.Padding(5))
+                .Height(70)
+                .Column(c =>
+                {
+                    c.Item().Text($"Invoice Number: {bill.InvoiceNumber}");
+                    c.Item().Text($"Invoice Date: {bill.Date:dd-MM-yyyy}");
+                    c.Item().Text($"Date Of Supply: {bill.SupplyDate:dd-MM-yyyy}");
+                    c.Item().Text("Reverse Charge: NO");
+                });
         });
-        col.Item().PaddingHorizontal(-10).LineHorizontal(1);
-        col.Item().PaddingTop(10).Row(row =>
+
+        col.Item().PaddingHorizontal(-10).BorderTop(1).BorderBottom(1).Row(row =>
+        {
+            row.RelativeItem()
+            .Height(70)
+                .BorderRight(1)
+                .Element(x => x.Padding(5))
+                .Column(c =>
+                {
+                    c.Item().Text("Details of Receiver | Billed to").Bold();
+                    c.Item().Text($"Name: {bill.Customer.Name}");
+                    c.Item().Text($"Address: {bill.Customer.BillingAddress}");
+                    c.Item().Text($"GSTIN: {bill.Customer.GstNo ?? "URP"}");
+                });
+
+            row.RelativeItem()
+            .Height(70)
+                .BorderRight(1)
+                .Element(x => x.Padding(5))
+                .Column(c =>
+                {
+                    c.Item().Text("Details of Consignee | Shipped to").Bold();
+                    c.Item().Text($"Address: {bill.Customer.ShippingAddress}");
+                });
+        });
+    }
+    static void BuildFooter(ColumnDescriptor col, string company)
+    {
+        col.Item().PaddingTop(15).Row(row =>
         {
             row.RelativeItem().Column(c =>
             {
-                c.Item().Text("Details of Receiver | Billed to").Bold();
-                c.Item().Text($"Name: {bill.Customer.Name}");
-                c.Item().Text($"Address: {bill.Customer.BillingAddress}");
-                c.Item().Text($"GSTIN: {bill.Customer.GstNo ?? "URP"}");
+                c.Item().Text("Bank and Payment Details").Bold();
+                c.Item().Text("Bank Name / Account Number / IFSC");
             });
-            // this is the problemtic lines
-            row.ConstantItem(1)
-                .BorderLeft(1).PaddingVertical(-20);
 
             row.RelativeItem().Column(c =>
             {
-                c.Item().Text("Details of Consignee | Shipped to").Bold();
-                c.Item().Text($"Address: {bill.Customer.ShippingAddress}");
+                c.Item().Text("Certified that the particulars given above are true and correct");
+                c.Item().Text($"For, {company}").Bold();
+                c.Item().Height(40);
+                c.Item().Text("Authorised Signatory");
             });
         });
-    }
 
+        col.Item().PaddingTop(10).Column(c =>
+        {
+            c.Item().Text("Terms And Conditions").Bold();
+
+            c.Item().Text(
+                "1. Goods once sold will not be taken back.\n" +
+                "2. Materials as above are received in good condition.\n" +
+                "3. Subject to Jaipur Jurisdiction. 4. Royalty Paid.");
+        });
+
+        col.Item().AlignCenter().Text("Thankyou for your business");
+    }
     static void BuildTable(ColumnDescriptor col, Bill bill)
     {
         int desiredRows = 12;
@@ -187,38 +224,6 @@ public static class BillPdfGenerator
             c.Item().Text($"Total Amount in words: {NumberToWords(bill.TotalAmount)} Rupees Only")
                 .FontSize(10);
         });
-    }
-
-    static void BuildFooter(ColumnDescriptor col, string company)
-    {
-        col.Item().PaddingTop(15).Row(row =>
-        {
-            row.RelativeItem().Column(c =>
-            {
-                c.Item().Text("Bank and Payment Details").Bold();
-                c.Item().Text("Bank Name / Account Number / IFSC");
-            });
-
-            row.RelativeItem().Column(c =>
-            {
-                c.Item().Text("Certified that the particulars given above are true and correct");
-                c.Item().Text($"For, {company}").Bold();
-                c.Item().Height(40);
-                c.Item().Text("Authorised Signatory");
-            });
-        });
-
-        col.Item().PaddingTop(10).Column(c =>
-        {
-            c.Item().Text("Terms And Conditions").Bold();
-
-            c.Item().Text(
-                "1. Goods once sold will not be taken back.\n" +
-                "2. Materials as above are received in good condition.\n" +
-                "3. Subject to Jaipur Jurisdiction. 4. Royalty Paid.");
-        });
-
-        col.Item().AlignCenter().Text("Thankyou for your business");
     }
 
     static IContainer HeaderCell(IContainer container)
