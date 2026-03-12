@@ -1,7 +1,14 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using UI.Core.Base;
+using UI.Core.Commands;
+using UI.Core.Navigation;
+using UI.Features.About;
+using UI.Features.Billing;
+using UI.Features.Customers;
+using UI.Features.Items;
 
-namespace UI;
+namespace UI.Features.Home;
 
 public class HomeViewModel : ViewModelBase
 {

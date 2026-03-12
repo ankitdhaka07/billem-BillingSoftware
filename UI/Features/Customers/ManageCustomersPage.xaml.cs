@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace UI;
+namespace UI.Features.Customers;
 
 public partial class ManageCustomersPage : UserControl
 {

@@ -1,6 +1,10 @@
 using System.Windows.Input;
+using UI.Core.Base;
+using UI.Core.Commands;
+using UI.Core.Navigation;
+using UI.Features.Home;
 
-namespace UI;
+namespace UI.Features.About;
 
 public class AboutViewModel : ViewModelBase
 {

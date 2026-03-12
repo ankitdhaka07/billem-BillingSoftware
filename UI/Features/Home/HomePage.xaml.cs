@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace UI;
+namespace UI.Features.Home;
 
 public partial class HomePage : UserControl
 {

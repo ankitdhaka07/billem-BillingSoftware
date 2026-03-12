@@ -1,4 +1,11 @@
 using System.Collections.ObjectModel;
+using UI.Core.Base;
+using UI.Core.Navigation;
+using UI.Features.About;
+using UI.Features.Billing;
+using UI.Features.Customers;
+using UI.Features.Home;
+using UI.Features.Items;
 
 namespace UI;
 

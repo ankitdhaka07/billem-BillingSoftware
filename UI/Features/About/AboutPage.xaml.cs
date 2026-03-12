@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace UI;
+namespace UI.Features.About;
 
 public partial class AboutPage : UserControl
 {

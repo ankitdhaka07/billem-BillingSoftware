@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace UI;
+namespace UI.Features.Items;
 
 public partial class ManageItemsPage : UserControl
 {

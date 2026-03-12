@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UI.QuantityPage"
+﻿<UserControl x:Class="UI.Features.Billing.QuantityPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 

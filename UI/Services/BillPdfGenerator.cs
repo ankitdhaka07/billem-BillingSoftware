@@ -1,7 +1,9 @@
-﻿using QuestPDF.Fluent;
+using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using QuestPDF.Helpers;
 using System.Globalization;
+
+namespace UI.Services;
 
 public static class BillPdfGenerator
 {
@@ -46,7 +48,7 @@ public static class BillPdfGenerator
         {
             row.ConstantItem(80)
                 .BorderRight(1)
-                .Element(x=>x.Padding(5))
+                .Element(x => x.Padding(5))
                 .Height(70)
                 .AlignCenter()
                 .AlignMiddle()
@@ -100,6 +102,7 @@ public static class BillPdfGenerator
                 });
         });
     }
+
     static void BuildFooter(ColumnDescriptor col, string company)
     {
         col.Item().PaddingTop(15).Row(row =>
@@ -131,6 +134,7 @@ public static class BillPdfGenerator
 
         col.Item().AlignCenter().Text("Thankyou for your business");
     }
+
     static void BuildTable(ColumnDescriptor col, Bill bill)
     {
         int desiredRows = 12;
@@ -139,40 +143,30 @@ public static class BillPdfGenerator
         {
             table.ColumnsDefinition(columns =>
             {
-                columns.ConstantColumn(30); // Sr
-                columns.RelativeColumn();   // Product
-
-                columns.ConstantColumn(45); // Qty
-                columns.ConstantColumn(50); // Rate
-                columns.ConstantColumn(60); // Taxable
-
-                columns.ConstantColumn(40); // CGST Rate
-                columns.ConstantColumn(55); // CGST Amount
-
-                columns.ConstantColumn(40); // SGST Rate
-                columns.ConstantColumn(55); // SGST Amount
-
-                columns.ConstantColumn(65); // Total
+                columns.ConstantColumn(30);
+                columns.RelativeColumn();
+                columns.ConstantColumn(45);
+                columns.ConstantColumn(50);
+                columns.ConstantColumn(60);
+                columns.ConstantColumn(40);
+                columns.ConstantColumn(55);
+                columns.ConstantColumn(40);
+                columns.ConstantColumn(55);
+                columns.ConstantColumn(65);
             });
 
             table.Header(header =>
             {
-                // ROW 1
                 header.Cell().RowSpan(2).Element(HeaderCell).Text("Sr");
                 header.Cell().RowSpan(2).Element(HeaderCell).Text("Product");
                 header.Cell().RowSpan(2).Element(HeaderCell).Text("QTY");
                 header.Cell().RowSpan(2).Element(HeaderCell).Text("Rate");
                 header.Cell().RowSpan(2).Element(HeaderCell).Text("Taxable");
-
                 header.Cell().ColumnSpan(2).Element(HeaderCell).Text("CGST");
                 header.Cell().ColumnSpan(2).Element(HeaderCell).Text("SGST");
-
                 header.Cell().RowSpan(2).Element(HeaderCell).Text("Total");
-
-                // ROW 2
                 header.Cell().Element(HeaderCell).Text("Rate");
                 header.Cell().Element(HeaderCell).Text("Amount");
-
                 header.Cell().Element(HeaderCell).Text("Rate");
                 header.Cell().Element(HeaderCell).Text("Amount");
             });
@@ -191,13 +185,10 @@ public static class BillPdfGenerator
                 table.Cell().Element(Cell).Text(item.Quantity.ToString());
                 table.Cell().Element(Cell).Text(item.Item.Price.ToString("0.00"));
                 table.Cell().Element(Cell).Text(taxable.ToString("0.00"));
-
                 table.Cell().Element(Cell).Text($"{bill.CgstPercentage * 100}%");
                 table.Cell().Element(Cell).Text(cgst.ToString("0.00"));
-
                 table.Cell().Element(Cell).Text($"{bill.SgstPercentage * 100}%");
                 table.Cell().Element(Cell).Text(sgst.ToString("0.00"));
-
                 table.Cell().Element(Cell).Text(total.ToString("0.00"));
             }
 
@@ -216,13 +207,8 @@ public static class BillPdfGenerator
             c.Item().Text($"Taxable Amount ₹ {bill.TotalTaxableAmount:0.00}");
             c.Item().Text($"Add: CGST ₹ {bill.CgstAmount:0.00}");
             c.Item().Text($"Add: SGST ₹ {bill.SgstAmount:0.00}");
-
-            c.Item().Text($"TOTAL ₹ {bill.TotalAmount:0.00}")
-                .Bold()
-                .FontSize(14);
-
-            c.Item().Text($"Total Amount in words: {NumberToWords(bill.TotalAmount)} Rupees Only")
-                .FontSize(10);
+            c.Item().Text($"TOTAL ₹ {bill.TotalAmount:0.00}").Bold().FontSize(14);
+            c.Item().Text($"Total Amount in words: {NumberToWords(bill.TotalAmount)} Rupees Only").FontSize(10);
         });
     }
 
@@ -233,8 +219,7 @@ public static class BillPdfGenerator
             .Border(1)
             .Padding(5)
             .AlignCenter()
-            .AlignMiddle()
-            ;
+            .AlignMiddle();
     }
 
     static IContainer Cell(IContainer container)
