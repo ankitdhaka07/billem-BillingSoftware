@@ -1,0 +1,82 @@
+<UserControl x:Class="UI.Features.Home.HomePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="#FFF2F4F7">
+
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="400" Margin="0,0,0,8">
+
+            <TextBlock Text="Billing App"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="#FF222222"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,8"/>
+
+            <TextBlock Text="SHIV GANGA STONE CRUSHER"
+                       FontSize="13"
+                       Foreground="#FF777777"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,40"/>
+
+            <!-- Generate Bill -->
+            <Button Command="{Binding GenerateBillCommand}"
+                    Margin="0,0,0,16"
+                    Height="64"
+                    Style="{StaticResource HomeTileStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="🧾" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Generate Bill" FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock Text="Select products and create invoice" FontSize="11" Foreground="#FF777777"/>
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+
+            <!-- Manage Items -->
+            <Button Command="{Binding ManageItemsCommand}"
+                    Margin="0,0,0,16"
+                    Height="64"
+                    Style="{StaticResource HomeTileStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="📦" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Items" FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock Text="Add or update products and prices" FontSize="11" Foreground="#FF777777"/>
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+
+            <!-- Manage Customers -->
+            <Button Command="{Binding ManageCustomersCommand}"
+                    Margin="0,0,0,16"
+                    Height="64"
+                    Style="{StaticResource HomeTileStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="👥" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Customers" FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock Text="Add or update customer records" FontSize="11" Foreground="#FF777777"/>
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+
+            <!-- About -->
+            <Button Command="{Binding AboutCommand}"
+                    Margin="0,0,0,16"
+                    Height="64"
+                    Style="{StaticResource HomeTileStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="ℹ️" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="About" FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock Text="App info and version" FontSize="11" Foreground="#FF777777"/>
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,10 +1,13 @@
-﻿using domain;
+using domain;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Input;
+using UI.Core.Base;
+using UI.Core.Commands;
+using UI.Services;
 
-namespace UI;
+namespace UI.Features.Billing;
 
 public class QuantityViewModel : ViewModelBase
 {

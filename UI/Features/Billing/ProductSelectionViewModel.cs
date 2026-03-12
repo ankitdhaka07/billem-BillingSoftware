@@ -1,7 +1,10 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
+using UI.Core.Base;
+using UI.Core.Commands;
+using UI.Core.Navigation;
 
-namespace UI;
+namespace UI.Features.Billing;
 
 public class ProductSelectionViewModel : ViewModelBase
 {
@@ -11,7 +14,6 @@ public class ProductSelectionViewModel : ViewModelBase
     public ICommand AddItemCommand { get; }
     public ICommand RemoveItemCommand { get; }
     public ICommand NextCommand { get; }
-
 
     public ProductSelectionViewModel(NavigationService navigationService, ObservableCollection<BillItem> selectedItems)
     {
@@ -30,7 +32,6 @@ public class ProductSelectionViewModel : ViewModelBase
             () => navigationService.Navigate<QuantityViewModel>(),
             () => SelectedItems.Any()
         );
-
     }
 
     private void AddItem(Item item)
@@ -44,10 +45,11 @@ public class ProductSelectionViewModel : ViewModelBase
             Quantity = 1
         });
         var removeIteminAvailble = AvailableItems.FirstOrDefault(i => i.Name == item.Name);
-        if(removeIteminAvailble!=null)
-        AvailableItems.Remove(removeIteminAvailble);
+        if (removeIteminAvailble != null)
+            AvailableItems.Remove(removeIteminAvailble);
         CommandManager.InvalidateRequerySuggested();
     }
+
     private void RemoveItem(BillItem billItem)
     {
         var removeIteminSelected = SelectedItems.FirstOrDefault(i => i.Item.Name == billItem.Item.Name);

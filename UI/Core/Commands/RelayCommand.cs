@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace UI;
+namespace UI.Core.Commands;
 
 
 public class RelayCommand : ICommand

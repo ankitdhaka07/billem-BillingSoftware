@@ -1,19 +1,74 @@
-﻿<Window x:Class="UI.MainWindow"
+<Window x:Class="UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ui="clr-namespace:UI"
+        xmlns:home="clr-namespace:UI.Features.Home"
+        xmlns:billing="clr-namespace:UI.Features.Billing"
+        xmlns:customers="clr-namespace:UI.Features.Customers"
+        xmlns:items="clr-namespace:UI.Features.Items"
+        xmlns:about="clr-namespace:UI.Features.About"
         Title="Billing App"
         Height="450"
         Width="800">
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type ui:ProductSelectionViewModel}">
-            <ui:ProductSelectionPage />
+
+        <!-- Home tile button style -->
+        <Style x:Key="HomeTileStyle" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FFE0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFF5F7FF"/>
+                                <Setter Property="BorderBrush" Value="#FF9BAEE0"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FFE8ECFA"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- VM → View mappings -->
+        <DataTemplate DataType="{x:Type home:HomeViewModel}">
+            <home:HomePage />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type ui:QuantityViewModel}">
-            <ui:QuantityPage />
+        <DataTemplate DataType="{x:Type billing:ProductSelectionViewModel}">
+            <billing:ProductSelectionPage />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type billing:QuantityViewModel}">
+            <billing:QuantityPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type items:ManageItemsViewModel}">
+            <items:ManageItemsPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type customers:ManageCustomersViewModel}">
+            <customers:ManageCustomersPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type about:AboutViewModel}">
+            <about:AboutPage />
+        </DataTemplate>
+
     </Window.Resources>
 
     <ContentControl Content="{Binding CurrentViewModel}" />

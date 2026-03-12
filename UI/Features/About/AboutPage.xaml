@@ -1,0 +1,39 @@
+<UserControl x:Class="UI.Features.About.AboutPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="20" Background="#FFF2F4F7">
+        <Border Background="White"
+                CornerRadius="12"
+                Padding="20"
+                Margin="10"
+                BorderBrush="#FFE0E0E0"
+                BorderThickness="1">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Billem"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,8"/>
+                <TextBlock Text="GST Billing Software"
+                           FontSize="14"
+                           Foreground="#FF777777"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,24"/>
+                <TextBlock Text="SHIV GANGA STONE CRUSHER"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Hathnoda Chomu Jaipur, Rajasthan"
+                           Foreground="#FF777777"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <Button Content="← Back"
+                Command="{Binding BackCommand}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Margin="20,0,0,20"
+                Width="100"/>
+    </Grid>
+</UserControl>
