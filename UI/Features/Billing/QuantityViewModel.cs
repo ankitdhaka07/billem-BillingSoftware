@@ -27,7 +27,7 @@ public class QuantityViewModel : ViewModelBase
         {
             Id = Guid.NewGuid().ToString(),
             Name = "Babulal",
-            GstNo = null,
+            GstNo = "0ADSFS4772L1PQ",
             BillingAddress = "Bhopawas, Rajasthan",
             ShippingAddress = "Bhopawas, Rajasthan"
         };
