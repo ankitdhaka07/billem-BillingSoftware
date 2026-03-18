@@ -1,7 +1,10 @@
+using domain;
 using QuestPDF.Fluent;
-using QuestPDF.Infrastructure;
 using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using System.Globalization;
+using System.IO;
+using System.Net;
 
 namespace UI.Services;
 
@@ -9,9 +12,9 @@ public static class BillPdfGenerator
 {
     public static void Generate(Bill bill, string filePath)
     {
-        var companyName = "SHIV GANGA STONE CRUSHER";
-        var companyAddress = "Hathnoda Chomu Jaipur, Jaipur, Rajasthan";
-        var companyPhone = "8890803066";
+        //var companyName = "SHIV GANGA STONE CRUSHER";
+        //var companyAddress = "Hathnoda Chomu Jaipur, Jaipur, Rajasthan";
+        //var companyPhone = "8890803066";
 
         Document.Create(container =>
         {
@@ -24,35 +27,55 @@ public static class BillPdfGenerator
                     .Padding(10)
                     .Column(col =>
                     {
-                        BuildHeader(col, bill, companyName, companyAddress, companyPhone);
+                        BuildHeader(col, bill) ;
                         BuildTable(col, bill);
                         col.Item().PaddingHorizontal(-10).LineHorizontal(1);
 
-                        BuildTotals(col, bill);
+                        //BuildTotals(col, bill);
 
-                        BuildFooter(col, companyName);
+                        BuildFooter(col, Seller.Name);
                     });
             });
         })
         .GeneratePdf(filePath);
     }
 
-    static void BuildHeader(ColumnDescriptor col, Bill bill, string companyName, string address, string phone)
+    static void BuildHeader(ColumnDescriptor col, Bill bill)
     {
-        col.Item().AlignCenter().PaddingHorizontal(-10).Text("Thank-you for doing business with us");
-        col.Item().AlignCenter().PaddingHorizontal(-10).Text("INVOICE")
+        var companyGst = Seller.GstNo;
+        var companyTin = Seller.TINNo;
+        var companyPan = Seller.PANNo;  
+        var companyName = Seller.Name;
+        var address = "Hathnoda Chomu Jaipur, Jaipur, Rajasthan";
+        var phone = "8890803066";
+        var image = Seller.LogoPath;
+        byte[] imageByte = File.Exists(image) ? File.ReadAllBytes(image) : null;
+        col.Item().PaddingHorizontal(-10).Row(row =>
+        {
+            row.RelativeItem().Element(x=>x.PaddingHorizontal(4)).Column(c =>
+            {
+                c.Item().Text($"GSTIN: {companyGst}").FontSize(9);
+                c.Item().Text($"PAN: {companyPan}").FontSize(9);
+                c.Item().Text($"TIN: {companyTin}").FontSize(9);
+            });
+            row.ConstantItem(80).AlignCenter().AlignMiddle().Element(e =>
+            {
+                if (imageByte != null)
+                    e.Image(imageByte).FitArea();
+            });
+            row.RelativeItem().Element(x => x.PaddingHorizontal(4)).AlignRight().Column(c =>
+            {
+                foreach (var p in Seller.PhoneNumbers)
+                    c.Item().AlignRight().Text($"Mobile: {p}").FontSize(9);
+            });
+        });
+        col.Item().AlignCenter().PaddingHorizontal(-10).Element(x=>x.PaddingBottom(2)).Text("Thank-you for doing business with us");
+        col.Item().AlignCenter().PaddingHorizontal(-10).Element(x => x.PaddingBottom(2)).Text("INVOICE")
             .FontSize(22)
             .Bold();
 
         col.Item().PaddingHorizontal(-10).BorderTop(1).BorderBottom(1).Row(row =>
         {
-            row.ConstantItem(80)
-                .BorderRight(1)
-                .Element(x => x.Padding(5))
-                .Height(70)
-                .AlignCenter()
-                .AlignMiddle()
-                .Text("LOGO");
 
             row.RelativeItem()
                 .BorderRight(1)
@@ -72,7 +95,7 @@ public static class BillPdfGenerator
                 {
                     c.Item().Text($"Invoice Number: {bill.InvoiceNumber}");
                     c.Item().Text($"Invoice Date: {bill.Date:dd-MM-yyyy}");
-                    c.Item().Text($"Date Of Supply: {bill.SupplyDate:dd-MM-yyyy}");
+                    c.Item().Text($"Place Of Supply: {bill.SupplyDate:dd-MM-yyyy}");
                     c.Item().Text("Reverse Charge: NO");
                 });
         });
@@ -105,54 +128,62 @@ public static class BillPdfGenerator
 
     static void BuildFooter(ColumnDescriptor col, string company)
     {
-        col.Item().PaddingTop(15).Row(row =>
+        col.Item().PaddingHorizontal(-10).BorderTop(1).BorderBottom(1).Row(row =>
         {
-            row.RelativeItem().Column(c =>
-            {
-                c.Item().Text("Bank and Payment Details").Bold();
-                c.Item().Text("Bank Name / Account Number / IFSC");
-            });
 
-            row.RelativeItem().Column(c =>
-            {
-                c.Item().Text("Certified that the particulars given above are true and correct");
-                c.Item().Text($"For, {company}").Bold();
-                c.Item().Height(40);
-                c.Item().Text("Authorised Signatory");
-            });
+            row.RelativeItem()
+                .BorderRight(1)
+                .Element(x => x.Padding(5))
+                .Height(70)
+                .Column(c =>
+                {
+                    c.Item().Text("Bank and Payment Details").Bold();
+                    c.Item().Text("Bank Name / Account Number / IFSC");
+                });
+
+            row.RelativeItem()
+                .Element(x => x.Padding(5))
+                .Height(70)
+                .Column(c =>
+                {
+                    c.Item().Text("Certified that the particulars given above are true and correct");
+                    c.Item().Text($"For, {company}").Bold();
+                    c.Item().Height(10);
+                    c.Item().Text("Authorised Signatory");
+                });
         });
-
         col.Item().PaddingTop(10).Column(c =>
         {
-            c.Item().Text("Terms And Conditions").Bold();
+            c.Item().Text("Terms And Conditions").FontSize(10).Bold();
 
             c.Item().Text(
                 "1. Goods once sold will not be taken back.\n" +
                 "2. Materials as above are received in good condition.\n" +
-                "3. Subject to Jaipur Jurisdiction. 4. Royalty Paid.");
+                "3. Subject to Jaipur Jurisdiction. 4. Royalty Paid.").FontSize(10);
         });
 
-        col.Item().AlignCenter().Text("Thankyou for your business");
+        //col.Item().AlignCenter().Text("Thankyou for your business");
+
     }
 
     static void BuildTable(ColumnDescriptor col, Bill bill)
     {
-        int desiredRows = 12;
+        int emptySpaceRows = 5;
 
         col.Item().PaddingTop(10).Table(table =>
         {
             table.ColumnsDefinition(columns =>
             {
-                columns.ConstantColumn(30);
-                columns.RelativeColumn();
-                columns.ConstantColumn(45);
-                columns.ConstantColumn(50);
-                columns.ConstantColumn(60);
-                columns.ConstantColumn(40);
-                columns.ConstantColumn(55);
-                columns.ConstantColumn(40);
-                columns.ConstantColumn(55);
-                columns.ConstantColumn(65);
+                columns.ConstantColumn(30);   // Sr
+                columns.RelativeColumn();     // Product
+                columns.ConstantColumn(45);   // Qty
+                columns.ConstantColumn(40);   // Rate
+                columns.ConstantColumn(55);   // Taxable
+                columns.ConstantColumn(40);   // CGST Rate
+                columns.ConstantColumn(55);   // CGST Amount
+                columns.ConstantColumn(35);   // SGST Rate
+                columns.ConstantColumn(75);   // SGST Amount (wider for labels)
+                columns.ConstantColumn(65);   // Total
             });
 
             table.Header(header =>
@@ -162,9 +193,12 @@ public static class BillPdfGenerator
                 header.Cell().RowSpan(2).Element(HeaderCell).Text("QTY");
                 header.Cell().RowSpan(2).Element(HeaderCell).Text("Rate");
                 header.Cell().RowSpan(2).Element(HeaderCell).Text("Taxable");
+
                 header.Cell().ColumnSpan(2).Element(HeaderCell).Text("CGST");
                 header.Cell().ColumnSpan(2).Element(HeaderCell).Text("SGST");
+
                 header.Cell().RowSpan(2).Element(HeaderCell).Text("Total");
+
                 header.Cell().Element(HeaderCell).Text("Rate");
                 header.Cell().Element(HeaderCell).Text("Amount");
                 header.Cell().Element(HeaderCell).Text("Rate");
@@ -185,18 +219,52 @@ public static class BillPdfGenerator
                 table.Cell().Element(Cell).Text(item.Quantity.ToString());
                 table.Cell().Element(Cell).Text(item.Item.Price.ToString("0.00"));
                 table.Cell().Element(Cell).Text(taxable.ToString("0.00"));
+
                 table.Cell().Element(Cell).Text($"{bill.CgstPercentage * 100}%");
                 table.Cell().Element(Cell).Text(cgst.ToString("0.00"));
+
                 table.Cell().Element(Cell).Text($"{bill.SgstPercentage * 100}%");
                 table.Cell().Element(Cell).Text(sgst.ToString("0.00"));
+
                 table.Cell().Element(Cell).Text(total.ToString("0.00"));
             }
 
-            for (int i = bill.BillItems.Count; i < desiredRows; i++)
+            // fill empty rows so table height stays constant
+            for (int i = 0; i < emptySpaceRows; i++)
             {
                 for (int j = 0; j < 10; j++)
                     table.Cell().Element(Cell).Text("");
             }
+
+            // spacer row
+            for (int j = 0; j < 10; j++)
+                table.Cell().Element(Cell).Text("");
+
+            void TotalsRow(string label, double value, bool bold = false, int fontSize = 8)
+            {
+                // columns 1–8 empty
+                for (int i = 0; i < 8; i++)
+                    table.Cell().Element(Cell).Text("");
+
+                // column 9 → label
+                var labelCell = table.Cell().Element(Cell).AlignRight() ;
+                if (bold)
+                    labelCell.Text(label).FontSize(fontSize).Bold();
+                else
+                    labelCell.Text(label).FontSize(fontSize);
+
+                // column 10 → value
+                var valueCell = table.Cell().Element(Cell).AlignRight();
+                if (bold)
+                    valueCell.Text(value.ToString("0.00")).Bold();
+                else
+                    valueCell.Text(value.ToString("0.00"));
+            }
+
+            TotalsRow("Taxable Amount", bill.TotalTaxableAmount,fontSize: 10);
+            TotalsRow("CGST", bill.CgstAmount, fontSize: 10);
+            TotalsRow("SGST", bill.SgstAmount, fontSize: 10);
+            TotalsRow("Total", bill.TotalAmount, true,fontSize: 10);
         });
     }
 
