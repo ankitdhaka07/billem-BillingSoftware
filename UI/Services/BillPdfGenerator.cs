@@ -95,7 +95,7 @@ public static class BillPdfGenerator
                 {
                     c.Item().Text($"Invoice Number: {bill.InvoiceNumber}");
                     c.Item().Text($"Invoice Date: {bill.Date:dd-MM-yyyy}");
-                    c.Item().Text($"Date Of Supply: {bill.SupplyDate:dd-MM-yyyy}");
+                    c.Item().Text($"Place Of Supply: {bill.SupplyDate:dd-MM-yyyy}");
                     c.Item().Text("Reverse Charge: NO");
                 });
         });
