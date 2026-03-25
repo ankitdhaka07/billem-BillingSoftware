@@ -36,12 +36,14 @@ public class ProductSelectionViewModel : ViewModelBase
 
     private void AddItem(Item item)
     {
-        if (SelectedItems.Any(b => b.Item == item))
+        if (SelectedItems.Any(b => b.ItemName == item.Name))
             return;
 
         SelectedItems.Add(new BillItem
         {
-            Item = item,
+            ItemId = item.Id ?? Guid.NewGuid(),
+            ItemName = item.Name,
+            UnitPrice = item.Price,
             Quantity = 1
         });
         var removeIteminAvailble = AvailableItems.FirstOrDefault(i => i.Name == item.Name);
@@ -52,10 +54,8 @@ public class ProductSelectionViewModel : ViewModelBase
 
     private void RemoveItem(BillItem billItem)
     {
-        var removeIteminSelected = SelectedItems.FirstOrDefault(i => i.Item.Name == billItem.Item.Name);
-        if (removeIteminSelected != null)
-            SelectedItems.Remove(billItem);
-        AvailableItems.Add(billItem.Item);
+        SelectedItems.Remove(billItem);
+        AvailableItems.Add(new Item { Id = billItem.ItemId == Guid.Empty ? null : billItem.ItemId, Name = billItem.ItemName, Price = billItem.UnitPrice });
         CommandManager.InvalidateRequerySuggested();
     }
 }

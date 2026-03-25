@@ -25,7 +25,7 @@ public class QuantityViewModel : ViewModelBase
     {
         var customer = new Customer
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = Guid.NewGuid(),
             Name = "Babulal",
             GstNo = "0ADSFS4772L1PQ",
             BillingAddress = "Bhopawas, Rajasthan",

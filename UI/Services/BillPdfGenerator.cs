@@ -215,9 +215,9 @@ public static class BillPdfGenerator
                 var total = taxable + cgst + sgst;
 
                 table.Cell().Element(Cell).Text(index++.ToString());
-                table.Cell().Element(Cell).Text(item.Item.Name);
+                table.Cell().Element(Cell).Text(item.ItemName);
                 table.Cell().Element(Cell).Text(item.Quantity.ToString());
-                table.Cell().Element(Cell).Text(item.Item.Price.ToString("0.00"));
+                table.Cell().Element(Cell).Text(item.UnitPrice.ToString("0.00"));
                 table.Cell().Element(Cell).Text(taxable.ToString("0.00"));
 
                 table.Cell().Element(Cell).Text($"{bill.CgstPercentage * 100}%");

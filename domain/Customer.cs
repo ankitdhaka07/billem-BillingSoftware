@@ -9,7 +9,7 @@ namespace domain;
 
 public class Customer
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     [Required] public string Name { get; set; }
     public string? GstNo { get; set; }
     public string? ShippingAddress { get; set; }
