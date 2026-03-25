@@ -25,7 +25,7 @@
             <Button Command="{Binding GenerateBillCommand}"
                     Margin="0,0,0,16"
                     Height="64"
-                    Style="{StaticResource HomeTileStyle}">
+                    Style="{DynamicResource HomeTileStyle}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="🧾" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <StackPanel VerticalAlignment="Center">
@@ -39,7 +39,7 @@
             <Button Command="{Binding ManageItemsCommand}"
                     Margin="0,0,0,16"
                     Height="64"
-                    Style="{StaticResource HomeTileStyle}">
+                    Style="{DynamicResource HomeTileStyle}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="📦" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <StackPanel VerticalAlignment="Center">
@@ -53,7 +53,7 @@
             <Button Command="{Binding ManageCustomersCommand}"
                     Margin="0,0,0,16"
                     Height="64"
-                    Style="{StaticResource HomeTileStyle}">
+                    Style="{DynamicResource HomeTileStyle}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="👥" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <StackPanel VerticalAlignment="Center">
@@ -67,7 +67,7 @@
             <Button Command="{Binding AboutCommand}"
                     Margin="0,0,0,16"
                     Height="64"
-                    Style="{StaticResource HomeTileStyle}">
+                    Style="{DynamicResource HomeTileStyle}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="ℹ️" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
                     <StackPanel VerticalAlignment="Center">
