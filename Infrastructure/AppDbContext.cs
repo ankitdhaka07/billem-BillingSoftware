@@ -25,6 +25,7 @@ public class AppDbContext : DbContext
             c.Property(x => x.GstNo).IsRequired(false);
             c.Property(x => x.ShippingAddress).IsRequired(false);
             c.Property(x => x.BillingAddress).IsRequired(false);
+            
         });
 
         modelBuilder.Entity<Item>(i =>

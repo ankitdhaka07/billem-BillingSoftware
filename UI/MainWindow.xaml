@@ -6,6 +6,7 @@
         xmlns:customers="clr-namespace:UI.Features.Customers"
         xmlns:items="clr-namespace:UI.Features.Items"
         xmlns:about="clr-namespace:UI.Features.About"
+        xmlns:bills="clr-namespace:UI.Features.Bills"
         Title="Billing App"
         Height="450"
         Width="800">
@@ -67,6 +68,14 @@
 
         <DataTemplate DataType="{x:Type about:AboutViewModel}">
             <about:AboutPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type bills:CheckBillsViewModel}">
+            <bills:CheckBillsPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type bills:BillDetailsViewModel}">
+            <bills:BillDetailsPage />
         </DataTemplate>
 
     </Window.Resources>

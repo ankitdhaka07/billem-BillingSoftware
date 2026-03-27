@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260327200651_removeItemFromBillItemmakeOptional")]
+    partial class removeItemFromBillItemmakeOptional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -61,7 +64,10 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("BillId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ItemId")
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ItemId1")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ItemName")
@@ -79,6 +85,8 @@ namespace Infrastructure.Migrations
                     b.HasIndex("BillId");
 
                     b.HasIndex("ItemId");
+
+                    b.HasIndex("ItemId1");
 
                     b.ToTable("BillItems");
                 });
@@ -148,6 +156,14 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
                 });
 
             modelBuilder.Entity("Bill", b =>

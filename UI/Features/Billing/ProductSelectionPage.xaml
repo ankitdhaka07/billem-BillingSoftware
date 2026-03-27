@@ -12,6 +12,22 @@
         BorderThickness="1">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
+                <!-- CUSTOMER SELECTION -->
+                <TextBlock Text="Select Customer"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8"
+                           Foreground="#FF333333"/>
+                <ComboBox ItemsSource="{Binding Customers}"
+                          SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}"
+                          DisplayMemberPath="Name"
+                          Margin="0,0,0,4"
+                          Height="32"/>
+                <TextBlock Text="{Binding SelectedCustomer.BillingAddress, StringFormat='Address: {0}'}"
+                           FontSize="11"
+                           Foreground="#FF666666"
+                           Margin="0,0,0,20"/>
+
                 <TextBlock Text="Available Products"
                     FontSize="16"
                     FontWeight="SemiBold"
@@ -96,13 +112,13 @@
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Text="{Binding Item.Name}"
+                                    <TextBlock Text="{Binding ItemName}"
                                FontWeight="Bold"
                                TextWrapping="Wrap"
                                MaxHeight="40"/>
 
                                     <TextBlock Grid.Row="1"
-                               Text="{Binding Item.Price, StringFormat=₹{0}}"
+                               Text="{Binding UnitPrice, StringFormat=₹{0}}"
                                Margin="0,4,0,0"/>
 
                                     <Button Grid.Row="2"
@@ -128,6 +144,12 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Margin="0,0,20,20"
+                Width="100"/>
+        <Button Content="← Back"
+                Command="{Binding BackCommand}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Margin="20,0,0,20"
                 Width="100"/>
     </Grid>
 </UserControl>

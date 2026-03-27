@@ -60,7 +60,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <!-- Item name -->
-                                        <TextBlock Text="{Binding Item.Name}"
+                                        <TextBlock Text="{Binding ItemName}"
                                                    VerticalAlignment="Center"
                                                    FontWeight="SemiBold"/>
 
@@ -73,7 +73,7 @@
 
                                         <!-- Price -->
                                         <TextBlock Grid.Column="2"
-                                                   Text="{Binding Item.Price, StringFormat=₹{0}}"
+                                                   Text="{Binding UnitPrice, StringFormat=₹{0}}"
                                                    VerticalAlignment="Center"/>
                                     </Grid>
                                 </Border>
@@ -93,5 +93,12 @@
                 Margin="0,0,20,20"
                 Width="140"
                 Height="36"/>
+        
+        <Button Content="← Back"
+                Command="{Binding BackCommand}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Margin="20,0,0,20"
+                Width="100"/>
     </Grid>
 </UserControl>
