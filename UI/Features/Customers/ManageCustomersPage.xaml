@@ -82,6 +82,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Text="{Binding Name}"
@@ -94,6 +95,18 @@
                                                    Margin="0,2,0,0"/>
                                     </StackPanel>
                                     <Button Grid.Column="1"
+                                            Content="Edit"
+                                            Command="{Binding DataContext.SelectCommand,
+                                                      RelativeSource={RelativeSource AncestorType=ListView}}"
+                                            CommandParameter="{Binding}"
+                                            Width="40" Height="24"
+                                            FontSize="10"
+                                            Foreground="#FF4A6CF7"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Cursor="Hand"
+                                            Margin="4,0"/>
+                                    <Button Grid.Column="2"
                                             Content="✕"
                                             Command="{Binding DataContext.DeleteCommand,
                                                       RelativeSource={RelativeSource AncestorType=ListView}}"

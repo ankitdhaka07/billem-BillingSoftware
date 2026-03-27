@@ -63,6 +63,20 @@
                 </StackPanel>
             </Button>
 
+            <!-- Check Bills -->
+            <Button Command="{Binding CheckBillsCommand}"
+                    Margin="0,0,0,16"
+                    Height="64"
+                    Style="{DynamicResource HomeTileStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="📋" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Check Bills" FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock Text="View all previously generated bills" FontSize="11" Foreground="#FF777777"/>
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+
             <!-- About -->
             <Button Command="{Binding AboutCommand}"
                     Margin="0,0,0,16"

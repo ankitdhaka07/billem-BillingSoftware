@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using QuestPDF.Infrastructure;
 using System;
-using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Windows;
 using UI.Core.Base;
 using UI.Core.Navigation;
+using UI.Features.Bills;
 using UI.Features.Billing;
 using UI.Features.Customers;
 using UI.Features.Home;
@@ -54,10 +54,10 @@ namespace UI
 
             // ── Repositories ──────────────────────────────────────────────
             sc.AddScoped<ICustomerRepository, CustomerRepository>();
+            sc.AddScoped<IItemRepository, ItemRepository>();
+            sc.AddScoped<IBillRepository, BillRepository>();
             // ── Shared billing session state ──────────────────────────────
-            sc.AddSingleton<ObservableCollection<BillItem>>();
-            // sc.AddScoped<IItemRepository, ItemRepository>();   — add as you build them
-            // sc.AddScoped<IBillRepository, BillRepository>();
+            sc.AddSingleton<BillingSession>();
 
             // ── Navigation ────────────────────────────────────────────────
             sc.AddSingleton<NavigationService>(sp =>
@@ -70,6 +70,7 @@ namespace UI
             sc.AddTransient<ManageItemsViewModel>();
             sc.AddTransient<ProductSelectionViewModel>();
             sc.AddTransient<QuantityViewModel>();
+            sc.AddTransient<CheckBillsViewModel>();
 
             return sc.BuildServiceProvider();
         }
