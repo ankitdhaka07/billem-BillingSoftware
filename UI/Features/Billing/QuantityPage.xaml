@@ -93,5 +93,12 @@
                 Margin="0,0,20,20"
                 Width="140"
                 Height="36"/>
+        
+        <Button Content="← Back"
+                Command="{Binding BackCommand}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Margin="20,0,0,20"
+                Width="100"/>
     </Grid>
 </UserControl>

@@ -5,6 +5,7 @@ using System.Windows.Input;
 using UI.Core.Base;
 using UI.Core.Commands;
 using UI.Core.Navigation;
+using UI.Features.Home;
 
 namespace UI.Features.Billing;
 
@@ -32,6 +33,7 @@ public class ProductSelectionViewModel : ViewModelBase
     public ICommand AddItemCommand { get; }
     public ICommand RemoveItemCommand { get; }
     public ICommand NextCommand { get; }
+    public ICommand BackCommand { get; }
 
     public ProductSelectionViewModel(NavigationService navigationService, BillingSession session, ICustomerRepository customerRepository, IItemRepository itemRepository)
     {
@@ -46,7 +48,9 @@ public class ProductSelectionViewModel : ViewModelBase
             () => navigationService.Navigate<QuantityViewModel>(),
             () => SelectedItems.Any() && SelectedCustomer != null
         );
-
+        BackCommand = new RelayCommand(
+            () => navigationService.Navigate<HomeViewModel>()
+            );
         _ = LoadCustomersAsync(customerRepository);
         _ = LoadItemsAsync(itemRepository);
     }

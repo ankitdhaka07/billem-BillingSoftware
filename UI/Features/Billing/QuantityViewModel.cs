@@ -21,6 +21,7 @@ public class QuantityViewModel : ViewModelBase
     public ObservableCollection<BillItem> Items => _session.SelectedItems;
 
     public ICommand GenerateBillCommand { get; }
+    public ICommand BackCommand { get; }
 
     public QuantityViewModel(BillingSession session, NavigationService navigation, IBillRepository billRepo)
     {
@@ -28,6 +29,8 @@ public class QuantityViewModel : ViewModelBase
         _navigation = navigation;
         _billRepo = billRepo;
         GenerateBillCommand = new RelayCommand(async () => await GenerateBillAsync());
+        BackCommand = new RelayCommand(
+            () => navigation.Navigate<ProductSelectionViewModel>());
     }
 
     private async Task GenerateBillAsync()
