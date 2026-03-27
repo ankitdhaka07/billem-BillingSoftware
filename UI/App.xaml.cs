@@ -71,6 +71,7 @@ namespace UI
             sc.AddTransient<ProductSelectionViewModel>();
             sc.AddTransient<QuantityViewModel>();
             sc.AddTransient<CheckBillsViewModel>();
+            sc.AddTransient<BillDetailsViewModel>();
 
             return sc.BuildServiceProvider();
         }

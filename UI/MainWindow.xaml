@@ -74,6 +74,10 @@
             <bills:CheckBillsPage />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type bills:BillDetailsViewModel}">
+            <bills:BillDetailsPage />
+        </DataTemplate>
+
     </Window.Resources>
 
     <ContentControl Content="{Binding CurrentViewModel}" />

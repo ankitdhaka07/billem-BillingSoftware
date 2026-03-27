@@ -45,6 +45,7 @@
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="1.5*"/>
                         <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="60"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Invoice #"
                                FontSize="11"
@@ -103,6 +104,7 @@
                                     <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="1.5*"/>
                                     <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition Width="60"/>
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Grid.Column="0"
@@ -132,6 +134,37 @@
                                     <Run Text="₹"/>
                                     <Run Text="{Binding TotalAmount, Mode=OneWay, StringFormat={}{0:N2}}"/>
                                 </TextBlock>
+
+                                <Button Grid.Column="4"
+                                        Content="View →"
+                                        Command="{Binding DataContext.ViewBillCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                        CommandParameter="{Binding}"
+                                        FontSize="11"
+                                        Foreground="#FF4A90E2"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Cursor="Hand"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <TextBlock Text="{TemplateBinding Content}"
+                                                                   Foreground="{TemplateBinding Foreground}"
+                                                                   FontSize="{TemplateBinding FontSize}"/>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Foreground" Value="#FF2563EB"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

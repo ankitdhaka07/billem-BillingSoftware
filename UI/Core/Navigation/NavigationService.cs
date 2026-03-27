@@ -17,4 +17,11 @@ public class NavigationService
         var viewModel = _viewModelFactory(typeof(TViewModel));
         OnNavigate.Invoke(viewModel);
     }
+
+    public void Navigate<TViewModel>(Action<TViewModel> configure) where TViewModel : ViewModelBase
+    {
+        var viewModel = (TViewModel)_viewModelFactory(typeof(TViewModel));
+        configure(viewModel);
+        OnNavigate!.Invoke(viewModel);
+    }
 }

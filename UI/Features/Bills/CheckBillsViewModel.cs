@@ -17,12 +17,15 @@ public class CheckBillsViewModel : ViewModelBase
     public ObservableCollection<Bill> Bills { get; } = new();
 
     public ICommand BackCommand { get; }
+    public ICommand ViewBillCommand { get; }
 
     public CheckBillsViewModel(IBillRepository billRepo, NavigationService navigation)
     {
         _billRepo = billRepo;
         _navigation = navigation;
         BackCommand = new RelayCommand(() => navigation.Navigate<HomeViewModel>());
+        ViewBillCommand = new RelayCommand<Bill>(bill =>
+            navigation.Navigate<BillDetailsViewModel>(vm => vm.LoadBill(bill.Id)));
         _ = LoadAsync();
     }
 
