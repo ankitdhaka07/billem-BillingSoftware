@@ -7,6 +7,7 @@
         xmlns:items="clr-namespace:UI.Features.Items"
         xmlns:about="clr-namespace:UI.Features.About"
         xmlns:bills="clr-namespace:UI.Features.Bills"
+        xmlns:payments="clr-namespace:UI.Features.Payments"
         Title="Billing App"
         Height="450"
         Width="800">
@@ -76,6 +77,22 @@
 
         <DataTemplate DataType="{x:Type bills:BillDetailsViewModel}">
             <bills:BillDetailsPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type payments:PaymentsViewModel}">
+            <payments:PaymentsPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type payments:RecordPaymentViewModel}">
+            <payments:RecordPaymentPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type payments:PaymentsListViewModel}">
+            <payments:PaymentsListPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type payments:PaymentDetailsViewModel}">
+            <payments:PaymentDetailsPage />
         </DataTemplate>
 
     </Window.Resources>

@@ -14,6 +14,7 @@ using UI.Features.Billing;
 using UI.Features.Customers;
 using UI.Features.Home;
 using UI.Features.Items;
+using UI.Features.Payments;
 
 namespace UI
 {
@@ -56,6 +57,7 @@ namespace UI
             sc.AddScoped<ICustomerRepository, CustomerRepository>();
             sc.AddScoped<IItemRepository, ItemRepository>();
             sc.AddScoped<IBillRepository, BillRepository>();
+            sc.AddScoped<PaymentRepository>();
             // ── Shared billing session state ──────────────────────────────
             sc.AddSingleton<BillingSession>();
 
@@ -72,6 +74,10 @@ namespace UI
             sc.AddTransient<QuantityViewModel>();
             sc.AddTransient<CheckBillsViewModel>();
             sc.AddTransient<BillDetailsViewModel>();
+            sc.AddTransient<PaymentsViewModel>();
+            sc.AddTransient<RecordPaymentViewModel>();
+            sc.AddTransient<PaymentsListViewModel>();
+            sc.AddTransient<PaymentDetailsViewModel>();
 
             return sc.BuildServiceProvider();
         }
