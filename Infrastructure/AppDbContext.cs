@@ -9,7 +9,7 @@ public class AppDbContext : DbContext
     public DbSet<Item> Items => Set<Item>();
     public DbSet<BillItem> BillItems => Set<BillItem>();
     public DbSet<Bill> Bills => Set<Bill>();
-
+    public DbSet<Payment> Payments => Set<Payment>();
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
@@ -60,7 +60,15 @@ public class AppDbContext : DbContext
             .HasForeignKey(bi => bi.BillId)
             .OnDelete(DeleteBehavior.Cascade);
         });
-
+        modelBuilder.Entity<Payment>(i =>
+        {
+            i.HasKey(x => x.Id);
+            i.Property(x => x.AmountPaid).IsRequired().HasColumnType("REAL");
+            i.HasOne<Customer>()
+             .WithMany()
+             .HasForeignKey(x => x.CustomerId)
+             .OnDelete(DeleteBehavior.Restrict);
+        });
 
         modelBuilder.Entity<BillItem>(bi =>
         {
