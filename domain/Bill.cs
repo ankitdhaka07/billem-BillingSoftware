@@ -11,7 +11,7 @@ public class Bill
     public DateTime SupplyDate { get; set; } = DateTime.Now;
     public string? VehicleNumber { get; set; }
     public Guid CustomerId { get; set; }       // FK — EF needs this
-    public Customer Customer { get; set; }
+    public Customer ?Customer { get; set; }
     public double CgstPercentage { get; set; } = 0.025;
     public double SgstPercentage { get; set; } = 0.025;
     

@@ -40,10 +40,7 @@ public class BillRepository : IBillRepository
         }
 
         // Customer already exists in DB — tell EF not to insert it again
-        if (bill.Customer != null)
-            _db.Entry(bill.Customer).State = EntityState.Unchanged;
-        Console.WriteLine($"CustomerId: {bill.CustomerId}");
-
+        bill.Customer = null;
         foreach (var bi in bill.BillItems)
         {
             Console.WriteLine($"ItemId: {bi.ItemId}");
