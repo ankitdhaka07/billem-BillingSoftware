@@ -8,6 +8,7 @@
         xmlns:about="clr-namespace:UI.Features.About"
         xmlns:bills="clr-namespace:UI.Features.Bills"
         xmlns:payments="clr-namespace:UI.Features.Payments"
+        xmlns:ledger="clr-namespace:UI.Features.Ledger"
         Title="Billing App"
         Height="450"
         Width="800">
@@ -93,6 +94,10 @@
 
         <DataTemplate DataType="{x:Type payments:PaymentDetailsViewModel}">
             <payments:PaymentDetailsPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type ledger:CustomerLedgerViewModel}">
+            <ledger:CustomerLedgerPage />
         </DataTemplate>
 
     </Window.Resources>

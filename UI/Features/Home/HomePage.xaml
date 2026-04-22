@@ -91,6 +91,20 @@
                 </StackPanel>
             </Button>
 
+            <!-- Ledger -->
+            <Button Command="{Binding CustomerLedgerCommand}"
+                    Margin="0,0,0,16"
+                    Height="64"
+                    Style="{DynamicResource HomeTileStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="📒" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Ledger" FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock Text="Generate PDF ledger for a customer" FontSize="11" Foreground="#FF777777"/>
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+
             <!-- About -->
             <Button Command="{Binding AboutCommand}"
                     Margin="0,0,0,16"

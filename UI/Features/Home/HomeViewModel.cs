@@ -7,6 +7,7 @@ using UI.Features.Bills;
 using UI.Features.Billing;
 using UI.Features.Customers;
 using UI.Features.Items;
+using UI.Features.Ledger;
 using UI.Features.Payments;
 
 namespace UI.Features.Home;
@@ -18,6 +19,7 @@ public class HomeViewModel : ViewModelBase
     public ICommand ManageCustomersCommand { get; }
     public ICommand CheckBillsCommand { get; }
     public ICommand PaymentsCommand { get; }
+    public ICommand CustomerLedgerCommand { get; }
     public ICommand AboutCommand { get; }
 
     public HomeViewModel(NavigationService navigationService)
@@ -27,6 +29,7 @@ public class HomeViewModel : ViewModelBase
         ManageCustomersCommand = new RelayCommand(() => navigationService.Navigate<ManageCustomersViewModel>());
         CheckBillsCommand      = new RelayCommand(() => navigationService.Navigate<CheckBillsViewModel>());
         PaymentsCommand        = new RelayCommand(() => navigationService.Navigate<PaymentsViewModel>());
+        CustomerLedgerCommand  = new RelayCommand(() => navigationService.Navigate<CustomerLedgerViewModel>());
         AboutCommand           = new RelayCommand(() => navigationService.Navigate<AboutViewModel>());
     }
 }
