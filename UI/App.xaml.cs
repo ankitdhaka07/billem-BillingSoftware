@@ -14,6 +14,7 @@ using UI.Features.Billing;
 using UI.Features.Customers;
 using UI.Features.Home;
 using UI.Features.Items;
+using UI.Features.Ledger;
 using UI.Features.Payments;
 
 namespace UI
@@ -78,6 +79,7 @@ namespace UI
             sc.AddTransient<RecordPaymentViewModel>();
             sc.AddTransient<PaymentsListViewModel>();
             sc.AddTransient<PaymentDetailsViewModel>();
+            sc.AddTransient<CustomerLedgerViewModel>();
 
             return sc.BuildServiceProvider();
         }
