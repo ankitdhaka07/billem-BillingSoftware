@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     public DbSet<BillItem> BillItems => Set<BillItem>();
     public DbSet<Bill> Bills => Set<Bill>();
     public DbSet<Payment> Payments => Set<Payment>();
+    public DbSet<CompanySettings> CompanySettings => Set<CompanySettings>();
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
@@ -68,6 +69,14 @@ public class AppDbContext : DbContext
              .WithMany()
              .HasForeignKey(x => x.CustomerId)
              .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<CompanySettings>(s =>
+        {
+            s.HasKey(x => x.Id);
+            s.Property(x => x.Name).IsRequired();
+            s.Property(x => x.CgstPercentage).HasColumnType("REAL");
+            s.Property(x => x.SgstPercentage).HasColumnType("REAL");
         });
 
         modelBuilder.Entity<BillItem>(bi =>

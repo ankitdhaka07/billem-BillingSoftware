@@ -1,3 +1,4 @@
+using domain;
 using System.Windows.Input;
 using UI.Core.Base;
 using UI.Core.Commands;
@@ -9,6 +10,9 @@ namespace UI.Features.About;
 public class AboutViewModel : ViewModelBase
 {
     public ICommand BackCommand { get; }
+
+    public string CompanyName => Seller.Name;
+    public string CompanyAddress => Seller.Address;
 
     public AboutViewModel(NavigationService navigationService)
     {

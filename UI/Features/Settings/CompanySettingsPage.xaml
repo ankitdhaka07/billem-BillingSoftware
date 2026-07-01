@@ -1,0 +1,166 @@
+<UserControl x:Class="UI.Features.Settings.CompanySettingsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="{StaticResource AppBackgroundBrush}">
+        <Grid Margin="24,20,24,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Margin="2,0,0,16">
+                <TextBlock Text="Company Settings" Style="{StaticResource PageTitleText}"/>
+                <TextBlock Text="Company, bank, tax and invoice details used on your bills"
+                           Style="{StaticResource PageSubtitleText}"
+                           Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- Form -->
+            <Border Grid.Row="1" Style="{StaticResource Card}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid Margin="0,0,6,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="28"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Left column: Company + Tax + Terms -->
+                        <StackPanel Grid.Column="0">
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+                                <Border Style="{StaticResource SectionAccent}"/>
+                                <TextBlock Text="Company" Style="{StaticResource SectionHeaderText}" Margin="0"/>
+                            </StackPanel>
+
+                            <TextBlock Text="Name *" Style="{StaticResource FieldLabelText}"/>
+                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12"/>
+
+                            <TextBlock Text="Address" Style="{StaticResource FieldLabelText}"/>
+                            <TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}"
+                                     TextWrapping="Wrap" AcceptsReturn="True" MinHeight="52"
+                                     VerticalContentAlignment="Top" Padding="11,8"
+                                     Margin="0,0,0,12"/>
+
+                            <TextBlock Text="Phone Numbers (comma separated)" Style="{StaticResource FieldLabelText}"/>
+                            <TextBox Text="{Binding PhoneNumbers, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12"/>
+
+                            <TextBlock Text="GST No" Style="{StaticResource FieldLabelText}"/>
+                            <TextBox Text="{Binding GstNo, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12"/>
+
+                            <TextBlock Text="PAN No" Style="{StaticResource FieldLabelText}"/>
+                            <TextBox Text="{Binding PANNo, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12"/>
+
+                            <TextBlock Text="TIN No" Style="{StaticResource FieldLabelText}"/>
+                            <TextBox Text="{Binding TINNo, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,16"/>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+                                <Border Style="{StaticResource SectionAccent}"
+                                        Background="{StaticResource SuccessBrush}"/>
+                                <TextBlock Text="Tax Rates" Style="{StaticResource SectionHeaderText}" Margin="0"/>
+                            </StackPanel>
+
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="14"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="CGST (%)" Style="{StaticResource FieldLabelText}"/>
+                                    <TextBox Text="{Binding CgstPercent, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="SGST (%)" Style="{StaticResource FieldLabelText}"/>
+                                    <TextBox Text="{Binding SgstPercent, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+                                <Border Style="{StaticResource SectionAccent}" Background="#F59E0B"/>
+                                <TextBlock Text="Terms &amp; Conditions" Style="{StaticResource SectionHeaderText}" Margin="0"/>
+                            </StackPanel>
+                            <TextBox Text="{Binding TermsAndConditions, UpdateSourceTrigger=PropertyChanged}"
+                                     TextWrapping="Wrap" AcceptsReturn="True" MinHeight="84"
+                                     VerticalContentAlignment="Top" Padding="11,8"
+                                     Margin="0,0,0,12"/>
+                        </StackPanel>
+
+                        <!-- Right column: Bank + Logo -->
+                        <StackPanel Grid.Column="2">
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+                                <Border Style="{StaticResource SectionAccent}" Background="#0EA5E9"/>
+                                <TextBlock Text="Bank Details" Style="{StaticResource SectionHeaderText}" Margin="0"/>
+                            </StackPanel>
+
+                            <TextBlock Text="Bank Name" Style="{StaticResource FieldLabelText}"/>
+                            <TextBox Text="{Binding BankName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12"/>
+
+                            <TextBlock Text="Account Number" Style="{StaticResource FieldLabelText}"/>
+                            <TextBox Text="{Binding AccountNumber, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12"/>
+
+                            <TextBlock Text="IFSC Code" Style="{StaticResource FieldLabelText}"/>
+                            <TextBox Text="{Binding IFSCCode, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12"/>
+
+                            <TextBlock Text="Branch Location" Style="{StaticResource FieldLabelText}"/>
+                            <TextBox Text="{Binding BranchLocation, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,16"/>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+                                <Border Style="{StaticResource SectionAccent}" Background="#7C3AED"/>
+                                <TextBlock Text="Logo" Style="{StaticResource SectionHeaderText}" Margin="0"/>
+                            </StackPanel>
+
+                            <TextBlock Text="Logo File Path" Style="{StaticResource FieldLabelText}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0"
+                                         Text="{Binding LogoPath, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Grid.Column="2"
+                                        Content="Browse…"
+                                        Command="{Binding BrowseLogoCommand}"
+                                        VerticalAlignment="Top"
+                                        Width="92"
+                                        Style="{StaticResource SubtleButton}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Footer -->
+            <Grid Grid.Row="2" Margin="0,16,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Content="←  Back"
+                        Command="{Binding BackCommand}"
+                        MinWidth="100"
+                        Style="{StaticResource GhostButton}"/>
+
+                <TextBlock Grid.Column="1"
+                           Text="{Binding StatusMessage}"
+                           Foreground="{StaticResource SuccessBrush}"
+                           FontSize="12"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
+                           Margin="0,0,12,0"/>
+
+                <Button Grid.Column="2"
+                        Content="Save Settings"
+                        Command="{Binding SaveCommand}"
+                        MinWidth="140"
+                        Style="{StaticResource PrimaryButton}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

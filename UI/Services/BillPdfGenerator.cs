@@ -46,8 +46,8 @@ public static class BillPdfGenerator
         var companyTin = Seller.TINNo;
         var companyPan = Seller.PANNo;  
         var companyName = Seller.Name;
-        var address = "Hathnoda Chomu Jaipur, Jaipur, Rajasthan";
-        var phone = "8890803066";
+        var address = Seller.Address;
+        var phone = string.Join(", ", Seller.PhoneNumbers);
         var image = Seller.LogoPath;
         byte[] imageByte = File.Exists(image) ? File.ReadAllBytes(image) : null;
         col.Item().PaddingHorizontal(-10).Row(row =>
@@ -58,7 +58,7 @@ public static class BillPdfGenerator
                 c.Item().Text($"PAN: {companyPan}").FontSize(9);
                 c.Item().Text($"TIN: {companyTin}").FontSize(9);
             });
-            row.ConstantItem(80).AlignCenter().AlignMiddle().Element(e =>
+            row.ConstantItem(80).MaxHeight(55).AlignCenter().AlignMiddle().Element(e =>
             {
                 if (imageByte != null)
                     e.Image(imageByte).FitArea();
@@ -80,7 +80,7 @@ public static class BillPdfGenerator
             row.RelativeItem()
                 .BorderRight(1)
                 .Element(x => x.Padding(5))
-                .Height(70)
+                .MinHeight(55)
                 .Column(c =>
                 {
                     c.Item().Text(companyName).Bold().FontSize(14);
@@ -90,7 +90,7 @@ public static class BillPdfGenerator
 
             row.RelativeItem()
                 .Element(x => x.Padding(5))
-                .Height(70)
+                .MinHeight(55)
                 .Column(c =>
                 {
                     c.Item().Text($"Invoice Number: {bill.InvoiceNumber}");
@@ -103,7 +103,7 @@ public static class BillPdfGenerator
         col.Item().PaddingHorizontal(-10).BorderTop(1).BorderBottom(1).Row(row =>
         {
             row.RelativeItem()
-            .Height(70)
+            .MinHeight(55)
                 .BorderRight(1)
                 .Element(x => x.Padding(5))
                 .Column(c =>
@@ -115,7 +115,7 @@ public static class BillPdfGenerator
                 });
 
             row.RelativeItem()
-            .Height(70)
+            .MinHeight(55)
                 .BorderRight(1)
                 .Element(x => x.Padding(5))
                 .Column(c =>
@@ -134,16 +134,18 @@ public static class BillPdfGenerator
             row.RelativeItem()
                 .BorderRight(1)
                 .Element(x => x.Padding(5))
-                .Height(70)
+                .MinHeight(55)
                 .Column(c =>
                 {
                     c.Item().Text("Bank and Payment Details").Bold();
-                    c.Item().Text("Bank Name / Account Number / IFSC");
+                    c.Item().Text($"Bank: {Seller.BankDetails.BankName}");
+                    c.Item().Text($"A/C No: {Seller.BankDetails.AccountNumber}");
+                    c.Item().Text($"IFSC: {Seller.BankDetails.IFSCCode}   Branch: {Seller.BankDetails.BranchLocation}");
                 });
 
             row.RelativeItem()
                 .Element(x => x.Padding(5))
-                .Height(70)
+                .MinHeight(55)
                 .Column(c =>
                 {
                     c.Item().Text("Certified that the particulars given above are true and correct");
@@ -156,10 +158,7 @@ public static class BillPdfGenerator
         {
             c.Item().Text("Terms And Conditions").FontSize(10).Bold();
 
-            c.Item().Text(
-                "1. Goods once sold will not be taken back.\n" +
-                "2. Materials as above are received in good condition.\n" +
-                "3. Subject to Jaipur Jurisdiction. 4. Royalty Paid.").FontSize(10);
+            c.Item().Text(Seller.TermsAndConditions).FontSize(10);
         });
 
         //col.Item().AlignCenter().Text("Thankyou for your business");
@@ -168,7 +167,9 @@ public static class BillPdfGenerator
 
     static void BuildTable(ColumnDescriptor col, Bill bill)
     {
-        int emptySpaceRows = 5;
+        // Pad short bills with blank rows for a fuller look, but never at the
+        // cost of pushing the invoice onto a second page.
+        int emptySpaceRows = Math.Max(0, 5 - bill.BillItems.Count);
 
         col.Item().PaddingTop(10).Table(table =>
         {
@@ -176,13 +177,13 @@ public static class BillPdfGenerator
             {
                 columns.ConstantColumn(30);   // Sr
                 columns.RelativeColumn();     // Product
-                columns.ConstantColumn(45);   // Qty
-                columns.ConstantColumn(40);   // Rate
-                columns.ConstantColumn(55);   // Taxable
+                columns.ConstantColumn(40);   // Qty
+                columns.ConstantColumn(50);   // Rate
+                columns.ConstantColumn(60);   // Taxable
                 columns.ConstantColumn(40);   // CGST Rate
                 columns.ConstantColumn(55);   // CGST Amount
                 columns.ConstantColumn(35);   // SGST Rate
-                columns.ConstantColumn(75);   // SGST Amount (wider for labels)
+                columns.ConstantColumn(65);   // SGST Amount (wider for labels)
                 columns.ConstantColumn(65);   // Total
             });
 

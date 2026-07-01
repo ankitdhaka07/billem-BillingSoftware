@@ -16,6 +16,7 @@ using UI.Features.Home;
 using UI.Features.Items;
 using UI.Features.Ledger;
 using UI.Features.Payments;
+using UI.Features.Settings;
 
 namespace UI
 {
@@ -32,6 +33,7 @@ namespace UI
             base.OnStartup(e);
             _services = BuildServices();
             await MigrateAsync(_services);
+            await LoadCompanySettingsAsync(_services);
 
             var mainVm = _services.GetRequiredService<MainWindowViewModel>();
             var mainWindow = new MainWindow { DataContext = mainVm };
@@ -59,6 +61,7 @@ namespace UI
             sc.AddScoped<IItemRepository, ItemRepository>();
             sc.AddScoped<IBillRepository, BillRepository>();
             sc.AddScoped<PaymentRepository>();
+            sc.AddScoped<ICompanySettingsRepository, CompanySettingsRepository>();
             // ── Shared billing session state ──────────────────────────────
             sc.AddSingleton<BillingSession>();
 
@@ -80,6 +83,8 @@ namespace UI
             sc.AddTransient<PaymentsListViewModel>();
             sc.AddTransient<PaymentDetailsViewModel>();
             sc.AddTransient<CustomerLedgerViewModel>();
+            sc.AddTransient<LedgerDetailsViewModel>();
+            sc.AddTransient<CompanySettingsViewModel>();
 
             return sc.BuildServiceProvider();
         }
@@ -89,6 +94,14 @@ namespace UI
             await using var scope = sp.CreateAsyncScope();
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             await db.Database.MigrateAsync();
+        }
+
+        private static async Task LoadCompanySettingsAsync(ServiceProvider sp)
+        {
+            await using var scope = sp.CreateAsyncScope();
+            var repo = scope.ServiceProvider.GetRequiredService<ICompanySettingsRepository>();
+            var settings = await repo.GetAsync();
+            domain.Seller.ApplyFrom(settings);
         }
         protected override void OnExit(ExitEventArgs e)
         {

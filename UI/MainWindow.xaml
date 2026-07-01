@@ -9,43 +9,18 @@
         xmlns:bills="clr-namespace:UI.Features.Bills"
         xmlns:payments="clr-namespace:UI.Features.Payments"
         xmlns:ledger="clr-namespace:UI.Features.Ledger"
-        Title="Billing App"
-        Height="450"
-        Width="800">
+        xmlns:settings="clr-namespace:UI.Features.Settings"
+        Title="Billem — GST Billing"
+        Height="720"
+        Width="1150"
+        MinHeight="560"
+        MinWidth="900"
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Segoe UI"
+        UseLayoutRounding="True"
+        Background="{StaticResource AppBackgroundBrush}">
 
     <Window.Resources>
-
-        <!-- Home tile button style -->
-        <Style x:Key="HomeTileStyle" TargetType="Button">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#FFE0E0E0"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="16,0"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="10"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FFF5F7FF"/>
-                                <Setter Property="BorderBrush" Value="#FF9BAEE0"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#FFE8ECFA"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
         <!-- VM → View mappings -->
         <DataTemplate DataType="{x:Type home:HomeViewModel}">
@@ -98,6 +73,14 @@
 
         <DataTemplate DataType="{x:Type ledger:CustomerLedgerViewModel}">
             <ledger:CustomerLedgerPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type ledger:LedgerDetailsViewModel}">
+            <ledger:LedgerDetailsPage />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type settings:CompanySettingsViewModel}">
+            <settings:CompanySettingsPage />
         </DataTemplate>
 
     </Window.Resources>

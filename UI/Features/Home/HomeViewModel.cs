@@ -1,3 +1,4 @@
+using domain;
 using System.Windows.Input;
 using UI.Core.Base;
 using UI.Core.Commands;
@@ -9,6 +10,7 @@ using UI.Features.Customers;
 using UI.Features.Items;
 using UI.Features.Ledger;
 using UI.Features.Payments;
+using UI.Features.Settings;
 
 namespace UI.Features.Home;
 
@@ -20,7 +22,10 @@ public class HomeViewModel : ViewModelBase
     public ICommand CheckBillsCommand { get; }
     public ICommand PaymentsCommand { get; }
     public ICommand CustomerLedgerCommand { get; }
+    public ICommand CompanySettingsCommand { get; }
     public ICommand AboutCommand { get; }
+
+    public string CompanyName => Seller.Name;
 
     public HomeViewModel(NavigationService navigationService)
     {
@@ -30,6 +35,7 @@ public class HomeViewModel : ViewModelBase
         CheckBillsCommand      = new RelayCommand(() => navigationService.Navigate<CheckBillsViewModel>());
         PaymentsCommand        = new RelayCommand(() => navigationService.Navigate<PaymentsViewModel>());
         CustomerLedgerCommand  = new RelayCommand(() => navigationService.Navigate<CustomerLedgerViewModel>());
+        CompanySettingsCommand = new RelayCommand(() => navigationService.Navigate<CompanySettingsViewModel>());
         AboutCommand           = new RelayCommand(() => navigationService.Navigate<AboutViewModel>());
     }
 }

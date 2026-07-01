@@ -7,39 +7,19 @@ namespace UI.Services;
 
 public static class LedgerPdfGenerator
 {
-    private record LedgerEntry(DateTime Date, string Particulars, double Debit, double Credit);
-
-    public static void Generate(
-        Customer customer,
-        DateTime from,
-        DateTime to,
-        List<Bill> bills,
-        List<Payment> payments,
-        double openingBalance,
-        string filePath)
+    /// <summary>Renders the PDF to the Desktop with the standard file name and returns the path.</summary>
+    public static string ExportToDesktop(LedgerResult ledger)
     {
-        var entries = new List<LedgerEntry>();
+        var fileName = $"Ledger_{ledger.Customer.Name.Replace(" ", "_")}_{ledger.From:yyyyMMdd}_{ledger.To:yyyyMMdd}.pdf";
+        var filePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+            fileName);
+        Generate(ledger, filePath);
+        return filePath;
+    }
 
-        foreach (var bill in bills)
-            entries.Add(new LedgerEntry(bill.Date, $"Invoice {bill.InvoiceNumber}", bill.TotalAmount, 0));
-
-        foreach (var payment in payments)
-            entries.Add(new LedgerEntry(payment.PaymentDate, "Payment Received", 0, payment.AmountPaid));
-
-        entries = entries.OrderBy(e => e.Date).ToList();
-
-        // Running balance starts from the opening balance
-        double runningBalance = openingBalance;
-        var rows = entries.Select(e =>
-        {
-            runningBalance += e.Debit - e.Credit;
-            return (e, balance: runningBalance);
-        }).ToList();
-
-        double periodDebit  = entries.Sum(e => e.Debit);
-        double periodCredit = entries.Sum(e => e.Credit);
-        double closingBalance = openingBalance + periodDebit - periodCredit;
-
+    public static void Generate(LedgerResult ledger, string filePath)
+    {
         byte[]? imageByte = File.Exists(Seller.LogoPath) ? File.ReadAllBytes(Seller.LogoPath) : null;
 
         Document.Create(container =>
@@ -52,15 +32,15 @@ public static class LedgerPdfGenerator
                     .Padding(10)
                     .Column(col =>
                     {
-                        BuildHeader(col, customer, from, to, imageByte);
-                        BuildTable(col, rows, openingBalance, periodDebit, periodCredit, closingBalance);
-                        BuildSummary(col, closingBalance);
+                        BuildHeader(col, ledger, imageByte);
+                        BuildTable(col, ledger);
+                        BuildSummary(col, ledger);
                     });
             });
         }).GeneratePdf(filePath);
     }
 
-    static void BuildHeader(ColumnDescriptor col, Customer customer, DateTime from, DateTime to, byte[]? imageByte)
+    static void BuildHeader(ColumnDescriptor col, LedgerResult ledger, byte[]? imageByte)
     {
         col.Item().PaddingHorizontal(-10).Row(row =>
         {
@@ -71,7 +51,7 @@ public static class LedgerPdfGenerator
                 c.Item().Text($"TIN: {Seller.TINNo}").FontSize(9);
             });
 
-            row.ConstantItem(80).AlignCenter().AlignMiddle().Element(e =>
+            row.ConstantItem(80).MaxHeight(55).AlignCenter().AlignMiddle().Element(e =>
             {
                 if (imageByte != null)
                     e.Image(imageByte).FitArea();
@@ -92,33 +72,27 @@ public static class LedgerPdfGenerator
             row.RelativeItem()
                 .BorderRight(1)
                 .Element(x => x.Padding(5))
-                .Height(60)
+                .MinHeight(60)
                 .Column(c =>
                 {
                     c.Item().Text(Seller.Name).Bold().FontSize(13);
-                    c.Item().Text("Hathnoda Chomu Jaipur, Jaipur, Rajasthan").FontSize(10);
+                    c.Item().Text(Seller.Address).FontSize(10);
                 });
 
             row.RelativeItem()
                 .Element(x => x.Padding(5))
-                .Height(60)
+                .MinHeight(60)
                 .Column(c =>
                 {
                     c.Item().Text("Customer Details").Bold().FontSize(10);
-                    c.Item().Text($"Name: {customer.Name}").FontSize(10);
-                    c.Item().Text($"GSTIN: {customer.GstNo ?? "URP"}").FontSize(10);
-                    c.Item().Text($"Period: {from:dd-MM-yyyy}  to  {to:dd-MM-yyyy}").FontSize(10);
+                    c.Item().Text($"Name: {ledger.Customer.Name}").FontSize(10);
+                    c.Item().Text($"GSTIN: {ledger.Customer.GstNo ?? "URP"}").FontSize(10);
+                    c.Item().Text($"Period: {ledger.From:dd-MM-yyyy}  to  {ledger.To:dd-MM-yyyy}").FontSize(10);
                 });
         });
     }
 
-    static void BuildTable(
-        ColumnDescriptor col,
-        List<(LedgerEntry entry, double balance)> rows,
-        double openingBalance,
-        double periodDebit,
-        double periodCredit,
-        double closingBalance)
+    static void BuildTable(ColumnDescriptor col, LedgerResult ledger)
     {
         col.Item().PaddingTop(10).Table(table =>
         {
@@ -141,61 +115,42 @@ public static class LedgerPdfGenerator
             });
 
             // Opening balance row
-            var openingLabel = openingBalance >= 0
-                ? $"{openingBalance:0.00} Dr"
-                : $"{Math.Abs(openingBalance):0.00} Cr";
             table.Cell().Element(OpeningCell).Text("").FontSize(10);
             table.Cell().Element(OpeningCell).Text("Opening Balance").Bold().FontSize(10);
             table.Cell().Element(OpeningCell).Text("").FontSize(10);
             table.Cell().Element(OpeningCell).Text("").FontSize(10);
-            table.Cell().Element(OpeningCell).AlignRight().Text(openingLabel).Bold().FontSize(10);
+            table.Cell().Element(OpeningCell).AlignRight().Text(ledger.OpeningBalanceLabel).Bold().FontSize(10);
 
-            if (rows.Count == 0)
+            if (ledger.Rows.Count == 0)
             {
                 table.Cell().ColumnSpan(5).Element(Cell)
                     .AlignCenter().Text("No transactions in this period").Italic().FontSize(10);
             }
 
-            foreach (var (entry, balance) in rows)
+            foreach (var row in ledger.Rows)
             {
-                var balanceLabel = balance >= 0
-                    ? $"{balance:0.00} Dr"
-                    : $"{Math.Abs(balance):0.00} Cr";
-
-                table.Cell().Element(Cell).Text(entry.Date.ToString("dd-MM-yyyy")).FontSize(10);
-                table.Cell().Element(Cell).Text(entry.Particulars).FontSize(10);
-                table.Cell().Element(Cell).AlignRight()
-                    .Text(entry.Debit > 0 ? entry.Debit.ToString("0.00") : "").FontSize(10);
-                table.Cell().Element(Cell).AlignRight()
-                    .Text(entry.Credit > 0 ? entry.Credit.ToString("0.00") : "").FontSize(10);
-                table.Cell().Element(Cell).AlignRight().Text(balanceLabel).FontSize(10);
+                table.Cell().Element(Cell).Text(row.Date.ToString("dd-MM-yyyy")).FontSize(10);
+                table.Cell().Element(Cell).Text(row.Particulars).FontSize(10);
+                table.Cell().Element(Cell).AlignRight().Text(row.DebitText).FontSize(10);
+                table.Cell().Element(Cell).AlignRight().Text(row.CreditText).FontSize(10);
+                table.Cell().Element(Cell).AlignRight().Text(row.BalanceLabel).FontSize(10);
             }
 
             // Closing totals row
-            var closingLabel = closingBalance >= 0
-                ? $"{closingBalance:0.00} Dr"
-                : $"{Math.Abs(closingBalance):0.00} Cr";
-
             table.Cell().Element(TotalsCell).Text("TOTAL").Bold();
             table.Cell().Element(TotalsCell).Text("");
-            table.Cell().Element(TotalsCell).AlignRight().Text(periodDebit.ToString("0.00")).Bold();
-            table.Cell().Element(TotalsCell).AlignRight().Text(periodCredit.ToString("0.00")).Bold();
-            table.Cell().Element(TotalsCell).AlignRight().Text(closingLabel).Bold();
+            table.Cell().Element(TotalsCell).AlignRight().Text(ledger.PeriodDebit.ToString("0.00")).Bold();
+            table.Cell().Element(TotalsCell).AlignRight().Text(ledger.PeriodCredit.ToString("0.00")).Bold();
+            table.Cell().Element(TotalsCell).AlignRight().Text(ledger.ClosingBalanceLabel).Bold();
         });
     }
 
-    static void BuildSummary(ColumnDescriptor col, double closingBalance)
+    static void BuildSummary(ColumnDescriptor col, LedgerResult ledger)
     {
-        var isDebit = closingBalance >= 0;
-        var absBalance = Math.Abs(closingBalance);
-        var label = isDebit
-            ? $"Closing Balance: Rs {absBalance:0.00} Dr  —  Customer owes this amount"
-            : $"Closing Balance: Rs {absBalance:0.00} Cr  —  Amount due to customer";
-
         col.Item().PaddingTop(12).PaddingHorizontal(-10)
             .Border(1).Padding(8)
             .AlignCenter()
-            .Text(label)
+            .Text(ledger.ClosingSummary)
             .FontSize(13).Bold();
     }
 

@@ -43,7 +43,9 @@ public class QuantityViewModel : ViewModelBase
             BillItems = Items.ToList(),
             Customer = customer,
             CustomerId = customer.Id,
-            Date = DateTime.Now 
+            Date = DateTime.Now,
+            CgstPercentage = Seller.CgstPercentage,
+            SgstPercentage = Seller.SgstPercentage
         };
 
         await _billRepo.AddAsync(bill);

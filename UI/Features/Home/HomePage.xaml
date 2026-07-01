@@ -2,123 +2,226 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Grid Background="#FFF2F4F7">
+    <Grid Background="{StaticResource AppBackgroundBrush}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Width="700"
+                        Margin="0,36,0,36">
 
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="400" Margin="0,0,0,8">
+                <!-- Brand header -->
+                <Border Width="64" Height="64"
+                        CornerRadius="18"
+                        Background="{StaticResource BrandGradientBrush}"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,14">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="20" ShadowDepth="4" Direction="270"
+                                          Color="#6366F1" Opacity="0.35"/>
+                    </Border.Effect>
+                    <TextBlock Text="B"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
 
-            <TextBlock Text="Billing App"
-                       FontSize="28"
-                       FontWeight="Bold"
-                       Foreground="#FF222222"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,8"/>
+                <TextBlock Text="Billem"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           HorizontalAlignment="Center"/>
 
-            <TextBlock Text="SHIV GANGA STONE CRUSHER"
-                       FontSize="13"
-                       Foreground="#FF777777"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,40"/>
+                <TextBlock Text="{Binding CompanyName}"
+                           FontSize="13"
+                           Foreground="{StaticResource TextMutedBrush}"
+                           HorizontalAlignment="Center"
+                           Margin="0,4,0,32"/>
 
-            <!-- Generate Bill -->
-            <Button Command="{Binding GenerateBillCommand}"
-                    Margin="0,0,0,16"
-                    Height="64"
-                    Style="{DynamicResource HomeTileStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="🧾" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Generate Bill" FontSize="15" FontWeight="SemiBold"/>
-                        <TextBlock Text="Select products and create invoice" FontSize="11" Foreground="#FF777777"/>
-                    </StackPanel>
-                </StackPanel>
-            </Button>
+                <!-- Tiles -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-            <!-- Manage Items -->
-            <Button Command="{Binding ManageItemsCommand}"
-                    Margin="0,0,0,16"
-                    Height="64"
-                    Style="{DynamicResource HomeTileStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="📦" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Items" FontSize="15" FontWeight="SemiBold"/>
-                        <TextBlock Text="Add or update products and prices" FontSize="11" Foreground="#FF777777"/>
-                    </StackPanel>
-                </StackPanel>
-            </Button>
+                    <!-- Generate Bill -->
+                    <Button Grid.Row="0" Grid.Column="0"
+                            Command="{Binding GenerateBillCommand}"
+                            Margin="6" Height="80"
+                            Style="{StaticResource HomeTileStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="44" Height="44" CornerRadius="12"
+                                    Background="{StaticResource ChipIndigoBrush}"
+                                    Margin="0,0,14,0">
+                                <TextBlock Text="🧾" FontSize="20"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Generate Bill" FontSize="14.5" FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Select products and create invoice" FontSize="11.5"
+                                           Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Button>
 
-            <!-- Manage Customers -->
-            <Button Command="{Binding ManageCustomersCommand}"
-                    Margin="0,0,0,16"
-                    Height="64"
-                    Style="{DynamicResource HomeTileStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="👥" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Customers" FontSize="15" FontWeight="SemiBold"/>
-                        <TextBlock Text="Add or update customer records" FontSize="11" Foreground="#FF777777"/>
-                    </StackPanel>
-                </StackPanel>
-            </Button>
+                    <!-- Items -->
+                    <Button Grid.Row="0" Grid.Column="1"
+                            Command="{Binding ManageItemsCommand}"
+                            Margin="6" Height="80"
+                            Style="{StaticResource HomeTileStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="44" Height="44" CornerRadius="12"
+                                    Background="{StaticResource ChipAmberBrush}"
+                                    Margin="0,0,14,0">
+                                <TextBlock Text="📦" FontSize="20"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Items" FontSize="14.5" FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Add or update products and prices" FontSize="11.5"
+                                           Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Button>
 
-            <!-- Check Bills -->
-            <Button Command="{Binding CheckBillsCommand}"
-                    Margin="0,0,0,16"
-                    Height="64"
-                    Style="{DynamicResource HomeTileStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="📋" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Check Bills" FontSize="15" FontWeight="SemiBold"/>
-                        <TextBlock Text="View all previously generated bills" FontSize="11" Foreground="#FF777777"/>
-                    </StackPanel>
-                </StackPanel>
-            </Button>
+                    <!-- Customers -->
+                    <Button Grid.Row="1" Grid.Column="0"
+                            Command="{Binding ManageCustomersCommand}"
+                            Margin="6" Height="80"
+                            Style="{StaticResource HomeTileStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="44" Height="44" CornerRadius="12"
+                                    Background="{StaticResource ChipSkyBrush}"
+                                    Margin="0,0,14,0">
+                                <TextBlock Text="👥" FontSize="20"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Customers" FontSize="14.5" FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Add or update customer records" FontSize="11.5"
+                                           Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Button>
 
-            <!-- Payments -->
-            <Button Command="{Binding PaymentsCommand}"
-                    Margin="0,0,0,16"
-                    Height="64"
-                    Style="{DynamicResource HomeTileStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="💰" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Payments" FontSize="15" FontWeight="SemiBold"/>
-                        <TextBlock Text="Record and track client payments" FontSize="11" Foreground="#FF777777"/>
-                    </StackPanel>
-                </StackPanel>
-            </Button>
+                    <!-- Check Bills -->
+                    <Button Grid.Row="1" Grid.Column="1"
+                            Command="{Binding CheckBillsCommand}"
+                            Margin="6" Height="80"
+                            Style="{StaticResource HomeTileStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="44" Height="44" CornerRadius="12"
+                                    Background="{StaticResource ChipVioletBrush}"
+                                    Margin="0,0,14,0">
+                                <TextBlock Text="📋" FontSize="20"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Check Bills" FontSize="14.5" FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="View all previously generated bills" FontSize="11.5"
+                                           Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Button>
 
-            <!-- Ledger -->
-            <Button Command="{Binding CustomerLedgerCommand}"
-                    Margin="0,0,0,16"
-                    Height="64"
-                    Style="{DynamicResource HomeTileStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="📒" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Ledger" FontSize="15" FontWeight="SemiBold"/>
-                        <TextBlock Text="Generate PDF ledger for a customer" FontSize="11" Foreground="#FF777777"/>
-                    </StackPanel>
-                </StackPanel>
-            </Button>
+                    <!-- Payments -->
+                    <Button Grid.Row="2" Grid.Column="0"
+                            Command="{Binding PaymentsCommand}"
+                            Margin="6" Height="80"
+                            Style="{StaticResource HomeTileStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="44" Height="44" CornerRadius="12"
+                                    Background="{StaticResource ChipEmeraldBrush}"
+                                    Margin="0,0,14,0">
+                                <TextBlock Text="💰" FontSize="20"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Payments" FontSize="14.5" FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Record and track client payments" FontSize="11.5"
+                                           Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Button>
 
-            <!-- About -->
-            <Button Command="{Binding AboutCommand}"
-                    Margin="0,0,0,16"
-                    Height="64"
-                    Style="{DynamicResource HomeTileStyle}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="ℹ️" FontSize="22" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="About" FontSize="15" FontWeight="SemiBold"/>
-                        <TextBlock Text="App info and version" FontSize="11" Foreground="#FF777777"/>
-                    </StackPanel>
-                </StackPanel>
-            </Button>
+                    <!-- Ledger -->
+                    <Button Grid.Row="2" Grid.Column="1"
+                            Command="{Binding CustomerLedgerCommand}"
+                            Margin="6" Height="80"
+                            Style="{StaticResource HomeTileStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="44" Height="44" CornerRadius="12"
+                                    Background="{StaticResource ChipRoseBrush}"
+                                    Margin="0,0,14,0">
+                                <TextBlock Text="📒" FontSize="20"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Ledger" FontSize="14.5" FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="View a customer's ledger, export PDF" FontSize="11.5"
+                                           Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Button>
 
-        </StackPanel>
+                    <!-- Company Settings -->
+                    <Button Grid.Row="3" Grid.Column="0"
+                            Command="{Binding CompanySettingsCommand}"
+                            Margin="6" Height="80"
+                            Style="{StaticResource HomeTileStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="44" Height="44" CornerRadius="12"
+                                    Background="{StaticResource ChipSlateBrush}"
+                                    Margin="0,0,14,0">
+                                <TextBlock Text="⚙️" FontSize="20"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Company Settings" FontSize="14.5" FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="Company, bank, tax and invoice details" FontSize="11.5"
+                                           Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- About -->
+                    <Button Grid.Row="3" Grid.Column="1"
+                            Command="{Binding AboutCommand}"
+                            Margin="6" Height="80"
+                            Style="{StaticResource HomeTileStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="44" Height="44" CornerRadius="12"
+                                    Background="{StaticResource ChipSkyBrush}"
+                                    Margin="0,0,14,0">
+                                <TextBlock Text="ℹ️" FontSize="20"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="About" FontSize="14.5" FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock Text="App info and version" FontSize="11.5"
+                                           Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

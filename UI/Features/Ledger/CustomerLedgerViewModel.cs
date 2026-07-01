@@ -2,7 +2,6 @@ using domain;
 using Infrastructure;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Windows.Input;
 using UI.Core.Base;
 using UI.Core.Commands;
@@ -42,6 +41,14 @@ public class CustomerLedgerViewModel : ViewModelBase
         set { _toDate = value; OnPropertyChanged(); }
     }
 
+    // Off by default — the ledger is shown in the UI; PDF only when asked for.
+    private bool _alsoGeneratePdf;
+    public bool AlsoGeneratePdf
+    {
+        get => _alsoGeneratePdf;
+        set { _alsoGeneratePdf = value; OnPropertyChanged(); }
+    }
+
     private string _statusMessage = string.Empty;
     public string StatusMessage
     {
@@ -49,7 +56,7 @@ public class CustomerLedgerViewModel : ViewModelBase
         set { _statusMessage = value; OnPropertyChanged(); }
     }
 
-    public ICommand GenerateLedgerCommand { get; }
+    public ICommand ViewLedgerCommand { get; }
     public ICommand BackCommand { get; }
 
     public CustomerLedgerViewModel(
@@ -64,8 +71,8 @@ public class CustomerLedgerViewModel : ViewModelBase
         _navigation = navigation;
 
         BackCommand = new RelayCommand(() => navigation.Navigate<HomeViewModel>());
-        GenerateLedgerCommand = new RelayCommand(
-            async () => await GenerateAsync(),
+        ViewLedgerCommand = new RelayCommand(
+            async () => await ViewLedgerAsync(),
             () => SelectedCustomer != null && FromDate <= ToDate);
 
         _ = LoadCustomersAsync();
@@ -79,46 +86,24 @@ public class CustomerLedgerViewModel : ViewModelBase
             Customers.Add(c);
     }
 
-    private async Task GenerateAsync()
+    private async Task ViewLedgerAsync()
     {
         if (SelectedCustomer is null) return;
 
-        StatusMessage = "Generating ledger...";
-
-        var fromDate = FromDate.Date;
-        var toDate = ToDate.Date.AddDays(1).AddTicks(-1);
+        StatusMessage = "Calculating ledger...";
 
         var allBills = await _billRepo.GetAllAsync();
         var allPayments = await _paymentRepo.GetAllPayments();
 
-        // Opening balance = net of all transactions strictly before the period start
-        var priorBills    = allBills.Where(b => b.CustomerId == SelectedCustomer.Id && b.Date < fromDate).Sum(b => b.TotalAmount);
-        var priorPayments = allPayments.Where(p => p.CustomerId == SelectedCustomer.Id && p.PaymentDate < fromDate).Sum(p => p.AmountPaid);
-        var openingBalance = priorBills - priorPayments; // positive = Dr (customer owes us)
+        var ledger = LedgerCalculator.Calculate(SelectedCustomer, FromDate, ToDate, allBills, allPayments);
 
-        var bills = allBills
-            .Where(b => b.CustomerId == SelectedCustomer.Id
-                        && b.Date >= fromDate
-                        && b.Date <= toDate)
-            .OrderBy(b => b.Date)
-            .ToList();
+        if (AlsoGeneratePdf)
+        {
+            var filePath = LedgerPdfGenerator.ExportToDesktop(ledger);
+            Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+        }
 
-        var payments = allPayments
-            .Where(p => p.CustomerId == SelectedCustomer.Id
-                        && p.PaymentDate >= fromDate
-                        && p.PaymentDate <= toDate)
-            .OrderBy(p => p.PaymentDate)
-            .ToList();
-
-        var fileName = $"Ledger_{SelectedCustomer.Name.Replace(" ", "_")}_{FromDate:yyyyMMdd}_{ToDate:yyyyMMdd}.pdf";
-        var filePath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-            fileName);
-
-        LedgerPdfGenerator.Generate(SelectedCustomer, FromDate, ToDate, bills, payments, openingBalance, filePath);
-
-        StatusMessage = $"Saved: {fileName}";
-
-        Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+        StatusMessage = string.Empty;
+        _navigation.Navigate<LedgerDetailsViewModel>(vm => vm.Load(ledger));
     }
 }

@@ -2,373 +2,315 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Grid Margin="20" Background="#FFF2F4F7">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid Background="{StaticResource AppBackgroundBrush}">
+        <Grid Margin="24,20,24,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <Grid Grid.Row="0" Margin="10,0,0,16">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding Bill.InvoiceNumber, StringFormat='Invoice: {0}'}"
-                       FontSize="22"
-                       FontWeight="SemiBold"
-                       Foreground="#FF333333"
-                       VerticalAlignment="Center"/>
-        </Grid>
-
-        <!-- Content -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-
-                <!-- Bill Info + Customer Info Row -->
-                <Grid Margin="0,0,0,12">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="12"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Bill Info Card -->
-                    <Border Grid.Column="0"
-                            Background="White"
-                            CornerRadius="12"
-                            Padding="16"
-                            BorderBrush="#FFE0E0E0"
-                            BorderThickness="1">
-                        <StackPanel>
-                            <TextBlock Text="Bill Details"
-                                       FontSize="13"
-                                       FontWeight="SemiBold"
-                                       Foreground="#FF555555"
-                                       Margin="0,0,0,12"/>
-
-                            <Grid Margin="0,0,0,6">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Invoice #" FontSize="12" Foreground="#FF888888"/>
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Bill.InvoiceNumber}"
-                                           FontSize="12"
-                                           FontWeight="SemiBold"
-                                           Foreground="#FF333333"/>
-                            </Grid>
-
-                            <Grid Margin="0,0,0,6">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Date" FontSize="12" Foreground="#FF888888"/>
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Bill.Date, StringFormat={}{0:dd MMM yyyy}}"
-                                           FontSize="12"
-                                           Foreground="#FF333333"/>
-                            </Grid>
-
-                            <Grid Margin="0,0,0,6">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Supply Date" FontSize="12" Foreground="#FF888888"/>
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Bill.SupplyDate, StringFormat={}{0:dd MMM yyyy}}"
-                                           FontSize="12"
-                                           Foreground="#FF333333"/>
-                            </Grid>
-
-                            <Grid Margin="0,0,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Vehicle #" FontSize="12" Foreground="#FF888888"/>
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Bill.VehicleNumber, TargetNullValue='—'}"
-                                           FontSize="12"
-                                           Foreground="#FF333333"/>
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Customer Info Card -->
-                    <Border Grid.Column="2"
-                            Background="White"
-                            CornerRadius="12"
-                            Padding="16"
-                            BorderBrush="#FFE0E0E0"
-                            BorderThickness="1">
-                        <StackPanel>
-                            <TextBlock Text="Customer"
-                                       FontSize="13"
-                                       FontWeight="SemiBold"
-                                       Foreground="#FF555555"
-                                       Margin="0,0,0,12"/>
-
-                            <Grid Margin="0,0,0,6">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Name" FontSize="12" Foreground="#FF888888"/>
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Bill.Customer.Name}"
-                                           FontSize="12"
-                                           FontWeight="SemiBold"
-                                           Foreground="#FF333333"/>
-                            </Grid>
-
-                            <Grid Margin="0,0,0,6">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="GST No." FontSize="12" Foreground="#FF888888"/>
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Bill.Customer.GstNo, TargetNullValue='—'}"
-                                           FontSize="12"
-                                           Foreground="#FF333333"/>
-                            </Grid>
-
-                            <Grid Margin="0,0,0,6">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Billing Addr." FontSize="12" Foreground="#FF888888"/>
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Bill.Customer.BillingAddress, TargetNullValue='—'}"
-                                           FontSize="12"
-                                           Foreground="#FF333333"
-                                           TextWrapping="Wrap"/>
-                            </Grid>
-
-                            <Grid Margin="0,0,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Shipping Addr." FontSize="12" Foreground="#FF888888"/>
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Bill.Customer.ShippingAddress, TargetNullValue='—'}"
-                                           FontSize="12"
-                                           Foreground="#FF333333"
-                                           TextWrapping="Wrap"/>
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <!-- Items Table Card -->
-                <Border Background="White"
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="2,0,0,16">
+                <TextBlock Text="{Binding Bill.InvoiceNumber}"
+                           Style="{StaticResource PageTitleText}"
+                           VerticalAlignment="Center"/>
+                <Border Background="{StaticResource ChipVioletBrush}"
                         CornerRadius="12"
-                        Padding="16"
-                        BorderBrush="#FFE0E0E0"
-                        BorderThickness="1"
-                        Margin="0,0,0,12">
-                    <StackPanel>
-                        <TextBlock Text="Items"
-                                   FontSize="13"
-                                   FontWeight="SemiBold"
-                                   Foreground="#FF555555"
-                                   Margin="0,0,0,12"/>
+                        Padding="10,4"
+                        Margin="12,0,0,0"
+                        VerticalAlignment="Center">
+                    <TextBlock Text="INVOICE"
+                               FontSize="10.5"
+                               FontWeight="Bold"
+                               Foreground="#7C3AED"/>
+                </Border>
+            </StackPanel>
 
-                        <!-- Column Headers -->
-                        <Grid Margin="4,0,4,8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="70"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="110"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="#" FontSize="11" FontWeight="SemiBold" Foreground="#FF777777"/>
-                            <TextBlock Grid.Column="1" Text="Item" FontSize="11" FontWeight="SemiBold" Foreground="#FF777777"/>
-                            <TextBlock Grid.Column="2" Text="Qty" FontSize="11" FontWeight="SemiBold" Foreground="#FF777777" TextAlignment="Right"/>
-                            <TextBlock Grid.Column="3" Text="Unit Price" FontSize="11" FontWeight="SemiBold" Foreground="#FF777777" TextAlignment="Right"/>
-                            <TextBlock Grid.Column="4" Text="Amount" FontSize="11" FontWeight="SemiBold" Foreground="#FF777777" TextAlignment="Right"/>
-                        </Grid>
+            <!-- Content -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="0,0,4,4">
 
-                        <Separator Background="#FFE8E8E8" Margin="0,0,0,4"/>
+                    <!-- Bill info + customer info -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="14"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                        <!-- Items -->
-                        <ItemsControl ItemsSource="{Binding Bill.BillItems}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="4,5,4,5">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="30"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="70"/>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="110"/>
-                                        </Grid.ColumnDefinitions>
+                        <!-- Bill info card -->
+                        <Border Grid.Column="0" Style="{StaticResource Card}" Padding="18">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                    <Border Style="{StaticResource SectionAccent}"/>
+                                    <TextBlock Text="Bill Details" Style="{StaticResource SectionHeaderText}" Margin="0"/>
+                                </StackPanel>
 
-                                        <TextBlock Grid.Column="0"
-                                                   FontSize="12"
-                                                   Foreground="#FF888888"
-                                                   VerticalAlignment="Center">
-                                            <TextBlock.Text>
-                                                <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl}"
-                                                         Converter="{x:Null}"
-                                                         Path="Items.Count"/>
-                                            </TextBlock.Text>
-                                        </TextBlock>
-
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding ItemName}"
-                                                   FontSize="13"
-                                                   Foreground="#FF333333"
-                                                   VerticalAlignment="Center"/>
-
-                                        <TextBlock Grid.Column="2"
-                                                   Text="{Binding Quantity, StringFormat={}{0:N2}}"
-                                                   FontSize="13"
-                                                   Foreground="#FF555555"
-                                                   TextAlignment="Right"
-                                                   VerticalAlignment="Center"/>
-
-                                        <TextBlock Grid.Column="3"
-                                                   FontSize="13"
-                                                   Foreground="#FF555555"
-                                                   TextAlignment="Right"
-                                                   VerticalAlignment="Center">
-                                            <Run Text="₹"/>
-                                            <Run Text="{Binding UnitPrice, Mode=OneWay, StringFormat={}{0:N2}}"/>
-                                        </TextBlock>
-
-                                        <TextBlock Grid.Column="4"
-                                                   FontSize="13"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="#FF333333"
-                                                   TextAlignment="Right"
-                                                   VerticalAlignment="Center">
-                                            <Run Text="₹"/>
-                                            <Run Text="{Binding Amount, Mode=OneWay, StringFormat={}{0:N2}}"/>
-                                        </TextBlock>
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <Separator Background="#FFE8E8E8" Margin="0,4,0,0"/>
-
-                        <!-- Totals -->
-                        <Grid Margin="4,10,4,4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="160"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="1">
-
-                                <Grid Margin="0,0,0,4">
+                                <Grid Margin="0,0,0,7">
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Taxable Amount" FontSize="12" Foreground="#FF777777"/>
-                                    <TextBlock Grid.Column="1" FontSize="12" Foreground="#FF555555">
-                                        <Run Text="₹"/>
-                                        <Run Text="{Binding Bill.TotalTaxableAmount, Mode=OneWay, StringFormat={}{0:N2}}"/>
-                                    </TextBlock>
+                                    <TextBlock Text="Invoice #" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Bill.InvoiceNumber}"
+                                               FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextPrimaryBrush}"/>
                                 </Grid>
 
-                                <Grid Margin="0,0,0,4">
+                                <Grid Margin="0,0,0,7">
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock FontSize="12" Foreground="#FF777777">
-                                        <Run Text="CGST ("/>
-                                        <Run Text="{Binding Bill.CgstPercentage, Mode=OneWay, StringFormat={}{0:P1}}"/>
-                                        <Run Text=")"/>
-                                    </TextBlock>
-                                    <TextBlock Grid.Column="1" FontSize="12" Foreground="#FF555555">
-                                        <Run Text="₹"/>
-                                        <Run Text="{Binding Bill.CgstAmount, Mode=OneWay, StringFormat={}{0:N2}}"/>
-                                    </TextBlock>
+                                    <TextBlock Text="Date" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Bill.Date, StringFormat={}{0:dd MMM yyyy}}"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextPrimaryBrush}"/>
                                 </Grid>
 
-                                <Grid Margin="0,0,0,8">
+                                <Grid Margin="0,0,0,7">
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock FontSize="12" Foreground="#FF777777">
-                                        <Run Text="SGST ("/>
-                                        <Run Text="{Binding Bill.SgstPercentage, Mode=OneWay, StringFormat={}{0:P1}}"/>
-                                        <Run Text=")"/>
-                                    </TextBlock>
-                                    <TextBlock Grid.Column="1" FontSize="12" Foreground="#FF555555">
-                                        <Run Text="₹"/>
-                                        <Run Text="{Binding Bill.SgstAmount, Mode=OneWay, StringFormat={}{0:N2}}"/>
-                                    </TextBlock>
+                                    <TextBlock Text="Supply Date" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Bill.SupplyDate, StringFormat={}{0:dd MMM yyyy}}"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextPrimaryBrush}"/>
                                 </Grid>
-
-                                <Separator Background="#FFE0E0E0" Margin="0,0,0,8"/>
 
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Total" FontSize="14" FontWeight="Bold" Foreground="#FF333333"/>
-                                    <TextBlock Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#FF22A06B">
-                                        <Run Text="₹"/>
-                                        <Run Text="{Binding Bill.TotalAmount, Mode=OneWay, StringFormat={}{0:N2}}"/>
-                                    </TextBlock>
+                                    <TextBlock Text="Vehicle #" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Bill.VehicleNumber, TargetNullValue='—'}"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Customer info card -->
+                        <Border Grid.Column="2" Style="{StaticResource Card}" Padding="18">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                    <Border Style="{StaticResource SectionAccent}" Background="#0EA5E9"/>
+                                    <TextBlock Text="Customer" Style="{StaticResource SectionHeaderText}" Margin="0"/>
+                                </StackPanel>
+
+                                <Grid Margin="0,0,0,7">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Name" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Bill.Customer.Name}"
+                                               FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextPrimaryBrush}"/>
                                 </Grid>
 
+                                <Grid Margin="0,0,0,7">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="GST No." FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Bill.Customer.GstNo, TargetNullValue='—'}"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                                </Grid>
+
+                                <Grid Margin="0,0,0,7">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Billing Addr." FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Bill.Customer.BillingAddress, TargetNullValue='—'}"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                               TextWrapping="Wrap"/>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Shipping Addr." FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Bill.Customer.ShippingAddress, TargetNullValue='—'}"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                               TextWrapping="Wrap"/>
+                                </Grid>
                             </StackPanel>
-                        </Grid>
+                        </Border>
+                    </Grid>
 
-                    </StackPanel>
-                </Border>
+                    <!-- Items table card -->
+                    <Border Style="{StaticResource Card}" Padding="18" Margin="0,0,0,4">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <Border Style="{StaticResource SectionAccent}"
+                                        Background="{StaticResource SuccessBrush}"/>
+                                <TextBlock Text="Items" Style="{StaticResource SectionHeaderText}" Margin="0"/>
+                            </StackPanel>
 
-            </StackPanel>
-        </ScrollViewer>
+                            <!-- Column headers -->
+                            <Grid Margin="4,0,4,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="110"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="ITEM" Style="{StaticResource TableHeaderText}"/>
+                                <TextBlock Grid.Column="1" Text="QTY" Style="{StaticResource TableHeaderText}" TextAlignment="Right"/>
+                                <TextBlock Grid.Column="2" Text="UNIT PRICE" Style="{StaticResource TableHeaderText}" TextAlignment="Right"/>
+                                <TextBlock Grid.Column="3" Text="AMOUNT" Style="{StaticResource TableHeaderText}" TextAlignment="Right"/>
+                            </Grid>
 
-        <!-- Footer -->
-        <Button Grid.Row="2"
-                Content="← Back to Bills"
-                Command="{Binding BackCommand}"
-                HorizontalAlignment="Left"
-                Margin="0,12,0,0"
-                Width="130"
-                Height="34"
-                FontSize="13"
-                Foreground="#FF555555"
-                Background="#FFF2F4F7"
-                BorderThickness="0">
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}"
-                                        CornerRadius="8"
-                                        Padding="12,0">
-                                    <ContentPresenter HorizontalAlignment="Center"
-                                                      VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#FFE5E7EB"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-        </Button>
+                            <Separator Background="{StaticResource DividerBrush}" Margin="0,0,0,4"/>
+
+                            <!-- Items -->
+                            <ItemsControl ItemsSource="{Binding Bill.BillItems}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="4,6,4,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="70"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="110"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0"
+                                                       Text="{Binding ItemName}"
+                                                       FontSize="13"
+                                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                                       VerticalAlignment="Center"/>
+
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding Quantity, StringFormat={}{0:N2}}"
+                                                       FontSize="13"
+                                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                                       TextAlignment="Right"
+                                                       VerticalAlignment="Center"/>
+
+                                            <TextBlock Grid.Column="2"
+                                                       FontSize="13"
+                                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                                       TextAlignment="Right"
+                                                       VerticalAlignment="Center">
+                                                <Run Text="₹"/><Run Text="{Binding UnitPrice, Mode=OneWay, StringFormat={}{0:N2}}"/>
+                                            </TextBlock>
+
+                                            <TextBlock Grid.Column="3"
+                                                       FontSize="13"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                                       TextAlignment="Right"
+                                                       VerticalAlignment="Center">
+                                                <Run Text="₹"/><Run Text="{Binding Amount, Mode=OneWay, StringFormat={}{0:N2}}"/>
+                                            </TextBlock>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <Separator Background="{StaticResource DividerBrush}" Margin="0,4,0,0"/>
+
+                            <!-- Totals -->
+                            <Grid Margin="4,12,4,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="200"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="1">
+
+                                    <Grid Margin="0,0,0,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Taxable Amount" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                        <TextBlock Grid.Column="1" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}">
+                                            <Run Text="₹"/><Run Text="{Binding Bill.TotalTaxableAmount, Mode=OneWay, StringFormat={}{0:N2}}"/>
+                                        </TextBlock>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock FontSize="12" Foreground="{StaticResource TextMutedBrush}">
+                                            <Run Text="CGST ("/><Run Text="{Binding Bill.CgstPercentage, Mode=OneWay, StringFormat={}{0:P1}}"/><Run Text=")"/>
+                                        </TextBlock>
+                                        <TextBlock Grid.Column="1" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}">
+                                            <Run Text="₹"/><Run Text="{Binding Bill.CgstAmount, Mode=OneWay, StringFormat={}{0:N2}}"/>
+                                        </TextBlock>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock FontSize="12" Foreground="{StaticResource TextMutedBrush}">
+                                            <Run Text="SGST ("/><Run Text="{Binding Bill.SgstPercentage, Mode=OneWay, StringFormat={}{0:P1}}"/><Run Text=")"/>
+                                        </TextBlock>
+                                        <TextBlock Grid.Column="1" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}">
+                                            <Run Text="₹"/><Run Text="{Binding Bill.SgstAmount, Mode=OneWay, StringFormat={}{0:N2}}"/>
+                                        </TextBlock>
+                                    </Grid>
+
+                                    <!-- Grand total pill -->
+                                    <Border Background="{StaticResource SuccessTintBrush}"
+                                            CornerRadius="10"
+                                            Padding="12,9">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Total" FontSize="13.5" FontWeight="Bold"
+                                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                                            <TextBlock Grid.Column="1" FontSize="13.5" FontWeight="Bold"
+                                                       Foreground="{StaticResource SuccessBrush}">
+                                                <Run Text="₹"/><Run Text="{Binding Bill.TotalAmount, Mode=OneWay, StringFormat={}{0:N2}}"/>
+                                            </TextBlock>
+                                        </Grid>
+                                    </Border>
+
+                                </StackPanel>
+                            </Grid>
+
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Footer -->
+            <Button Grid.Row="2"
+                    Content="←  Back to Bills"
+                    Command="{Binding BackCommand}"
+                    HorizontalAlignment="Left"
+                    MinWidth="130"
+                    Margin="0,16,0,0"
+                    Style="{StaticResource GhostButton}"/>
+        </Grid>
     </Grid>
 </UserControl>
